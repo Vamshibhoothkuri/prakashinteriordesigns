@@ -22,8 +22,8 @@ function Index() {
       <Nav />
       <Hero />
       <CategoryShowcase />
-      <Portfolio />
       <Process />
+      <Testimonials />
       <About />
       <Contact />
       <Footer />

@@ -198,116 +198,60 @@ function CategoryShowcase() {
   );
 }
 
-/* -------------------------- PORTFOLIO -------------------------- */
-const defaultPortfolio: GalleryItem[] = [
-  { id: "d1", url: p1, type: "image", name: "Serene Bedroom Retreat", category: "residential", createdAt: 0 },
-  { id: "d2", url: p2, type: "image", name: "Terracotta Lounge", category: "residential", createdAt: 0 },
-  { id: "d3", url: p3, type: "image", name: "Atelier Workspace", category: "commercial", createdAt: 0 },
-  { id: "d4", url: p4, type: "image", name: "Classic Dining Hall", category: "residential", createdAt: 0 },
-  { id: "d5", url: heroImg, type: "image", name: "Studio Loft", category: "commercial", createdAt: 0 },
-];
-
-function Portfolio() {
-  const [filter, setFilter] = useState<"all" | "residential" | "commercial" | "videos">("all");
-  const [items, setItems] = useState<GalleryItem[]>(defaultPortfolio);
-  const [lightbox, setLightbox] = useState<GalleryItem | null>(null);
-
-  useEffect(() => {
-    const saved = gallery.getAll();
-    setItems([...saved, ...defaultPortfolio]);
-  }, []);
-
-  const filtered = items.filter((i) =>
-    filter === "all" ? true : filter === "videos" ? i.type === "video" : i.category === filter
-  );
-
-  const tabs = [
-    { k: "all", l: "All" },
-    { k: "residential", l: "Residential" },
-    { k: "commercial", l: "Commercial" },
-    { k: "videos", l: "Videos" },
-  ] as const;
-
+/* ------------------------- TESTIMONIALS ------------------------ */
+function Testimonials() {
+  const items = [
+    {
+      quote: "Luxe transformed our apartment into a warm, soulful home. Every detail — from the wood tones to the lighting — feels intentional and timeless.",
+      name: "Ananya & Rohan Mehta",
+      role: "Residential · 3BHK Apartment",
+    },
+    {
+      quote: "The team understood our brand instantly. Our café now has a personality our customers actually talk about. Bookings have doubled since the redesign.",
+      name: "Karthik Reddy",
+      role: "Owner, Brew & Bloom Café",
+    },
+    {
+      quote: "Professional, calm, and incredibly detail-oriented. The home theatre design is beyond what we imagined. Worth every rupee.",
+      name: "Priya Sharma",
+      role: "Residential · Duplex Villa",
+    },
+    {
+      quote: "From the first concept board to the final styling, the experience was seamless. Our office finally feels like us.",
+      name: "Vikram Iyer",
+      role: "Founder, Northbridge Studios",
+    },
+  ];
   return (
-    <section id="portfolio" className="py-24 md:py-32 px-6">
+    <section id="testimonials" className="py-24 md:py-32 px-6 bg-cream">
       <div className="max-w-7xl mx-auto">
-        <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-12">
-          <div>
-            <p className="text-[11px] uppercase tracking-[0.3em] text-terracotta mb-4">Selected Work</p>
-            <h2 className="font-display text-4xl md:text-5xl">Our <em>portfolio</em>.</h2>
-          </div>
-          <div className="flex flex-wrap gap-1 border border-clay/40">
-            {tabs.map((t) => (
-              <button
-                key={t.k}
-                onClick={() => setFilter(t.k)}
-                className={`px-5 py-2.5 text-[11px] uppercase tracking-[0.2em] transition-colors ${
-                  filter === t.k ? "bg-charcoal text-cream" : "text-charcoal/70 hover:text-charcoal"
-                }`}
-              >
-                {t.l}
-              </button>
-            ))}
-          </div>
+        <div className="mb-14 max-w-2xl">
+          <p className="text-[11px] uppercase tracking-[0.3em] text-terracotta mb-4">Kind words</p>
+          <h2 className="font-display text-4xl md:text-5xl">
+            What our <em>clients</em> say.
+          </h2>
+          <p className="text-charcoal/70 text-sm mt-5 max-w-xl leading-relaxed">
+            A few notes from the homes, cafés, and offices we've had the privilege to design.
+          </p>
         </div>
-
-        {filtered.length === 0 ? (
-          <p className="text-center text-charcoal/50 py-16 italic font-display text-xl">No items in this category yet.</p>
-        ) : (
-          <div className="columns-1 sm:columns-2 lg:columns-3 gap-4 [column-fill:_balance]">
-            {filtered.map((item, idx) => (
-              <button
-                key={item.id}
-                onClick={() => setLightbox(item)}
-                className={`group relative block w-full mb-4 overflow-hidden break-inside-avoid ${
-                  idx % 5 === 0 ? "aspect-[3/4]" : "aspect-square"
-                }`}
-              >
-                {item.type === "video" ? (
-                  <>
-                    <video src={item.url} className="w-full h-full object-cover" muted playsInline />
-                    <span className="absolute top-4 right-4 bg-cream/90 text-charcoal px-3 py-1 text-[10px] uppercase tracking-[0.2em]">▶ Video</span>
-                  </>
-                ) : (
-                  <img src={item.url} alt={item.name} loading="lazy" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
-                )}
-                <div className="absolute inset-0 bg-charcoal/0 group-hover:bg-charcoal/50 transition-colors flex items-end p-6 opacity-0 group-hover:opacity-100">
-                  <div className="text-left">
-                    <div className="font-display text-xl text-cream">{item.name}</div>
-                    <div className="text-[10px] uppercase tracking-[0.2em] text-terracotta mt-1">{item.category}</div>
-                  </div>
-                </div>
-              </button>
-            ))}
-          </div>
-        )}
+        <div className="grid sm:grid-cols-2 gap-6">
+          {items.map((t) => (
+            <figure
+              key={t.name}
+              className="bg-sand p-8 md:p-10 border-l-2 border-terracotta hover:shadow-lg transition-shadow"
+            >
+              <div className="font-display text-5xl text-terracotta leading-none mb-3">"</div>
+              <blockquote className="text-charcoal/80 leading-relaxed mb-6 font-display text-xl italic">
+                {t.quote}
+              </blockquote>
+              <figcaption>
+                <div className="text-charcoal text-sm font-medium">{t.name}</div>
+                <div className="text-[10px] uppercase tracking-[0.25em] text-charcoal/60 mt-1">{t.role}</div>
+              </figcaption>
+            </figure>
+          ))}
+        </div>
       </div>
-
-      {lightbox && (
-        <div
-          className="fixed inset-0 z-[60] bg-charcoal/95 backdrop-blur-sm flex items-center justify-center p-6"
-          onClick={() => setLightbox(null)}
-        >
-          <button
-            onClick={() => setLightbox(null)}
-            className="absolute top-6 right-6 text-cream hover:text-terracotta text-3xl"
-            aria-label="close"
-          >
-            ×
-          </button>
-          <div className="max-w-5xl max-h-[85vh] w-full" onClick={(e) => e.stopPropagation()}>
-            {lightbox.type === "video" ? (
-              <video src={lightbox.url} controls autoPlay className="w-full max-h-[85vh] object-contain" />
-            ) : (
-              <img src={lightbox.url} alt={lightbox.name} className="w-full max-h-[85vh] object-contain" />
-            )}
-            <div className="mt-4 text-center">
-              <div className="font-display text-2xl text-cream">{lightbox.name}</div>
-              <div className="text-[10px] uppercase tracking-[0.2em] text-terracotta mt-1">{lightbox.category}</div>
-            </div>
-          </div>
-        </div>
-      )}
     </section>
   );
 }

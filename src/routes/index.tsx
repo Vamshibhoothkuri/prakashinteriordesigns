@@ -3,26 +3,14 @@ import { useEffect, useRef, useState } from "react";
 import { Link } from "@tanstack/react-router";
 import { toast } from "sonner";
 import { gallery, type GalleryItem } from "@/lib/admin-auth";
+import { CATEGORIES } from "@/lib/categories";
+import { DesignCard } from "@/components/site/DesignCard";
 import heroImg from "@/assets/hero-interior.jpg";
 import p1 from "@/assets/portfolio-1.jpg";
 import p2 from "@/assets/portfolio-2.jpg";
 import p3 from "@/assets/portfolio-3.jpg";
 import p4 from "@/assets/portfolio-4.jpg";
 import aboutImg from "@/assets/about-studio.jpg";
-import svcKitchen from "@/assets/svc-kitchen.jpg";
-import svcWardrobe from "@/assets/svc-wardrobe.jpg";
-import svcCabinets from "@/assets/svc-cabinets.jpg";
-import svcBed from "@/assets/svc-bed.jpg";
-import svcSofa from "@/assets/svc-sofa.jpg";
-import svcTvUnit from "@/assets/svc-tvunit.jpg";
-import svcCurtains from "@/assets/svc-curtains.jpg";
-import svcCeiling from "@/assets/svc-ceiling.jpg";
-import svcWallpaper from "@/assets/svc-wallpaper.jpg";
-import svcPartition from "@/assets/svc-partition.jpg";
-import svcCrockery from "@/assets/svc-crockery.jpg";
-import svcTheatre from "@/assets/svc-theatre.jpg";
-import svcRestaurant from "@/assets/svc-restaurant.jpg";
-import svcHotel from "@/assets/svc-hotel.jpg";
 
 export const Route = createFileRoute("/")({
   component: Index,
@@ -33,7 +21,7 @@ function Index() {
     <div className="min-h-screen bg-cream text-charcoal">
       <Nav />
       <Hero />
-      <Services />
+      <CategoryShowcase />
       <Portfolio />
       <Process />
       <About />

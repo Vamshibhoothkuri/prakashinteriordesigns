@@ -296,6 +296,9 @@ function About() {
           <p className="text-cream/70 mb-8 leading-relaxed">
             From our studio, we've shaped over 180 homes, boutiques, and hospitality spaces across the globe — each one tailored to the people who call it theirs.
           </p>
+          <p className="text-cream/70 mb-8 leading-relaxed">
+            We have <span className="text-clay font-medium">professional carpenters and skilled craftsmen</span> in-house — every joint, finish and detail is built by hands that have spent years perfecting their craft.
+          </p>
           <a href="#contact" className="inline-flex px-7 py-3.5 border border-cream text-cream text-xs uppercase tracking-[0.22em] hover:bg-cream hover:text-charcoal transition-colors">Work with us</a>
         </div>
         <div className="relative">

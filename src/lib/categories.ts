@@ -262,7 +262,56 @@ const COMMERCIAL: Category = {
   ],
 };
 
-export const CATEGORIES: Category[] = [RESIDENTIAL, COMMERCIAL];
+const HOME_THEATRE: Category = {
+  slug: "home-theatre",
+  name: "Home Theatre",
+  tagline: "Cinematic experiences, crafted at home.",
+  description: "Premium home theatres with acoustic design, immersive lighting and luxe seating.",
+  cover: svcTheatre,
+  subcategories: [
+    { slug: "private-theatres", name: "Private Theatres" },
+    { slug: "media-rooms", name: "Media Rooms" },
+    { slug: "acoustic-design", name: "Acoustic Design" },
+  ],
+  designs: [
+    {
+      slug: "luxury-private-theatre",
+      title: "Luxury Private Theatre",
+      description: "Dedicated home cinema with tiered recliner seating, acoustic panelling and starlit ceiling.",
+      cover: svcTheatre,
+      gallery: [svcTheatre, svcCeiling, svcSofa],
+      tags: ["Premium", "Featured"],
+      materials: ["Acoustic fabric", "Velvet recliners", "Fibre-optic ceiling"],
+      subcategory: "private-theatres",
+      category: "home-theatre",
+      featured: true,
+    },
+    {
+      slug: "family-media-room",
+      title: "Family Media Room",
+      description: "Relaxed media lounge with modular seating, ambient lighting and integrated AV.",
+      cover: svcSofa,
+      gallery: [svcSofa, svcTvUnit, svcTheatre],
+      tags: ["Cozy", "Family"],
+      materials: ["Modular sofa", "Soft wool rug", "Walnut AV unit"],
+      subcategory: "media-rooms",
+      category: "home-theatre",
+    },
+    {
+      slug: "acoustic-wall-design",
+      title: "Acoustic Wall Design",
+      description: "Sculpted acoustic wall panels tuned for clarity and warmth in dedicated theatres.",
+      cover: svcCeiling,
+      gallery: [svcCeiling, svcTheatre, svcPartition],
+      tags: ["Acoustic", "Architectural"],
+      materials: ["Slatted oak", "Acoustic foam core", "Fabric wrap"],
+      subcategory: "acoustic-design",
+      category: "home-theatre",
+    },
+  ],
+};
+
+export const CATEGORIES: Category[] = [RESIDENTIAL, COMMERCIAL, HOME_THEATRE];
 
 export function getCategory(slug: string): Category | undefined {
   return CATEGORIES.find((c) => c.slug === slug);

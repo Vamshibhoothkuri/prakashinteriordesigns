@@ -135,21 +135,54 @@ function Stat({ n, l }: { n: string; l: string }) {
 }
 
 /* -------------------------- SERVICES --------------------------- */
+type ServiceDef = { name: string; cover: string; blurb: string };
+
+const RESIDENTIAL_SERVICES: ServiceDef[] = [
+  { name: "Modern Kitchen", cover: p1, blurb: "Sleek modular kitchens with smart storage and premium finishes." },
+  { name: "Wardrobes", cover: p2, blurb: "Walk-ins, sliders and bespoke wardrobes tailored to your space." },
+  { name: "Cabinets", cover: p3, blurb: "Custom cabinetry that blends utility with sculptural beauty." },
+  { name: "Hydraulic Beds", cover: p4, blurb: "Space-saving beds with hydraulic storage, finished in fine veneers." },
+  { name: "Sofas", cover: p2, blurb: "Hand-crafted seating in linens, bouclé and full-grain leathers." },
+  { name: "TV Units", cover: p3, blurb: "Statement media walls integrated with lighting and storage." },
+  { name: "Curtains", cover: p4, blurb: "Drapery in natural fabrics — sheers, blackouts and motorised options." },
+  { name: "False Ceiling", cover: p1, blurb: "Layered ceilings with concealed lighting and acoustic detailing." },
+  { name: "Wallpapers", cover: p2, blurb: "Imported wallpapers, textured panels and bespoke murals." },
+  { name: "Partitions", cover: p3, blurb: "Glass, fluted wood and metal partitions that define without dividing." },
+  { name: "Crockery Units", cover: p4, blurb: "Display crockery units crafted as the centrepiece of your dining." },
+];
+
+const COMMERCIAL_SERVICES: ServiceDef[] = [
+  { name: "Modern Kitchen", cover: p1, blurb: "Commercial-grade kitchens engineered for performance and beauty." },
+  { name: "Partitions", cover: p3, blurb: "Functional partitions for restaurants, hotels and workspaces." },
+  { name: "False Ceiling", cover: p2, blurb: "Architectural ceilings tuned for ambience and acoustics." },
+  { name: "Wallpapers", cover: p4, blurb: "Brand-aligned wall finishes for hospitality interiors." },
+  { name: "Cabinets & Storage", cover: p1, blurb: "Back-of-house and front-of-house storage, beautifully detailed." },
+  { name: "Curtains", cover: p2, blurb: "Heavy drapery and sheers tailored for hotels and restaurants." },
+  { name: "Crockery & Display Units", cover: p3, blurb: "Display joinery that elevates the guest experience." },
+  { name: "Sofas & Seating", cover: p4, blurb: "Banquettes, lounge seating and bespoke restaurant chairs." },
+  { name: "TV Units", cover: p1, blurb: "Discreet AV joinery for lobbies, lounges and suites." },
+];
+
 function Services() {
-  const residential = [
-    "Modern Kitchen", "Wardrobes", "Cabinets", "Hydraulic Beds", "Sofas",
-    "TV Units", "Curtains", "False Ceiling", "Wallpapers", "Partitions", "Crockery Units",
-  ];
-  const commercial = [
-    "Modern Kitchen", "Partitions", "False Ceiling", "Wallpapers", "Cabinets & Storage",
-    "Curtains", "Crockery & Display Units", "Sofas & Seating", "TV Units",
-  ];
+  const [active, setActive] = useState<{ name: string; blurb: string } | null>(null);
+  const [galleryItems, setGalleryItems] = useState<GalleryItem[]>([]);
+
+  useEffect(() => {
+    setGalleryItems(gallery.getAll());
+  }, []);
+
+  const imagesFor = (serviceName: string) =>
+    galleryItems.filter(
+      (g) => g.service && g.service.toLowerCase() === serviceName.toLowerCase()
+    );
+
   return (
     <section id="services" className="bg-charcoal text-cream py-24 md:py-32 px-6 mt-12">
       <div className="max-w-7xl mx-auto">
         <div className="mb-16 max-w-2xl">
           <p className="text-[11px] uppercase tracking-[0.3em] text-terracotta mb-4">What we do</p>
           <h2 className="font-display text-4xl md:text-5xl"><em className="text-clay">Services</em> tailored to every space.</h2>
+          <p className="text-cream/60 text-sm mt-5 max-w-xl">Tap any service to view a gallery of work — admins can attach images per-service from the dashboard.</p>
         </div>
 
         {/* RESIDENTIAL */}
@@ -162,14 +195,26 @@ function Services() {
             <p className="text-cream/60 text-sm max-w-sm">Duplex Houses · Apartments · Independent Houses</p>
           </div>
           <div className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-            {residential.map((s) => (
-              <div key={s} className="group bg-charcoal border border-cream/10 hover:border-terracotta hover:bg-cream/5 transition-all p-6 min-h-[110px] flex items-center">
-                <h4 className="font-display text-xl group-hover:text-terracotta transition-colors">{s}</h4>
-              </div>
+            {RESIDENTIAL_SERVICES.map((s) => (
+              <ServiceCard
+                key={s.name}
+                service={s}
+                count={imagesFor(s.name).length}
+                onOpen={() => setActive({ name: s.name, blurb: s.blurb })}
+              />
             ))}
 
             {/* Featured Home Theatre card */}
-            <div className="relative sm:col-span-2 md:col-span-2 lg:col-span-2 row-span-1 overflow-hidden p-8 bg-gradient-to-br from-[#0a0808] via-charcoal to-[#2a1810] border border-terracotta/60 shadow-[0_0_40px_-8px_rgba(155,110,78,0.6)] hover:shadow-[0_0_60px_-4px_rgba(155,110,78,0.9)] transition-shadow">
+            <button
+              onClick={() =>
+                setActive({
+                  name: "Home Theatre Design",
+                  blurb:
+                    "Transform a room into a cinematic escape — custom acoustics, lighting, seating and screen design tailored for your home.",
+                })
+              }
+              className="group relative text-left sm:col-span-2 md:col-span-2 lg:col-span-2 overflow-hidden p-8 bg-gradient-to-br from-[#0a0808] via-charcoal to-[#2a1810] border border-terracotta/60 shadow-[0_0_40px_-8px_rgba(155,110,78,0.6)] hover:shadow-[0_0_60px_-4px_rgba(155,110,78,0.9)] transition-shadow"
+            >
               <span className="absolute top-4 right-4 bg-terracotta text-cream px-3 py-1 text-[10px] uppercase tracking-[0.25em] font-medium">★ Premium</span>
               <div className="absolute -top-20 -left-20 h-60 w-60 rounded-full bg-terracotta/20 blur-3xl pointer-events-none" />
               <div className="relative">
@@ -180,8 +225,9 @@ function Services() {
                 <p className="text-cream/70 text-sm leading-relaxed max-w-md">
                   Transform a room into a cinematic escape — custom acoustics, lighting, seating and screen design tailored for your home.
                 </p>
+                <span className="inline-block mt-5 text-[11px] uppercase tracking-[0.25em] text-terracotta group-hover:text-cream transition-colors">View Gallery →</span>
               </div>
-            </div>
+            </button>
           </div>
         </div>
 
@@ -195,15 +241,187 @@ function Services() {
             <p className="text-cream/60 text-sm max-w-sm">Restaurants · Hotels</p>
           </div>
           <div className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-            {commercial.map((s) => (
-              <div key={s} className="group bg-charcoal border border-cream/10 hover:border-terracotta hover:bg-cream/5 transition-all p-6 min-h-[110px] flex items-center">
-                <h4 className="font-display text-xl group-hover:text-terracotta transition-colors">{s}</h4>
-              </div>
+            {COMMERCIAL_SERVICES.map((s) => (
+              <ServiceCard
+                key={"c-" + s.name}
+                service={s}
+                count={imagesFor(s.name).length}
+                onOpen={() => setActive({ name: s.name, blurb: s.blurb })}
+              />
             ))}
           </div>
         </div>
       </div>
+
+      {active && (
+        <ServiceLightbox
+          name={active.name}
+          blurb={active.blurb}
+          items={imagesFor(active.name)}
+          onClose={() => setActive(null)}
+        />
+      )}
     </section>
+  );
+}
+
+function ServiceCard({
+  service,
+  count,
+  onOpen,
+}: {
+  service: ServiceDef;
+  count: number;
+  onOpen: () => void;
+}) {
+  return (
+    <button
+      onClick={onOpen}
+      className="group relative overflow-hidden aspect-[4/5] text-left border border-cream/10 hover:border-terracotta transition-all"
+    >
+      <img
+        src={service.cover}
+        alt={service.name}
+        loading="lazy"
+        className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+      />
+      <div className="absolute inset-0 bg-gradient-to-t from-charcoal via-charcoal/40 to-transparent" />
+      <div className="absolute inset-0 p-5 flex flex-col justify-end">
+        <h4 className="font-display text-xl md:text-2xl text-cream group-hover:text-terracotta transition-colors">
+          {service.name}
+        </h4>
+        <div className="flex items-center justify-between mt-2">
+          <span className="text-[10px] uppercase tracking-[0.22em] text-cream/70">
+            {count > 0 ? `${count} photo${count > 1 ? "s" : ""}` : "View details"}
+          </span>
+          <span className="text-[11px] text-terracotta opacity-0 group-hover:opacity-100 translate-x-[-6px] group-hover:translate-x-0 transition-all">
+            →
+          </span>
+        </div>
+      </div>
+    </button>
+  );
+}
+
+function ServiceLightbox({
+  name,
+  blurb,
+  items,
+  onClose,
+}: {
+  name: string;
+  blurb: string;
+  items: GalleryItem[];
+  onClose: () => void;
+}) {
+  const [viewer, setViewer] = useState<GalleryItem | null>(null);
+
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        if (viewer) setViewer(null);
+        else onClose();
+      }
+    };
+    window.addEventListener("keydown", onKey);
+    document.body.style.overflow = "hidden";
+    return () => {
+      window.removeEventListener("keydown", onKey);
+      document.body.style.overflow = "";
+    };
+  }, [viewer, onClose]);
+
+  return (
+    <div
+      className="fixed inset-0 z-[70] bg-charcoal/95 backdrop-blur-sm overflow-y-auto"
+      onClick={onClose}
+    >
+      <div
+        className="min-h-screen max-w-6xl mx-auto px-6 py-16"
+        onClick={(e) => e.stopPropagation()}
+      >
+        <div className="flex items-start justify-between gap-6 mb-10">
+          <div>
+            <p className="text-[11px] uppercase tracking-[0.3em] text-terracotta mb-3">Service</p>
+            <h3 className="font-display text-4xl md:text-5xl text-cream mb-3">{name}</h3>
+            <p className="text-cream/70 max-w-2xl leading-relaxed">{blurb}</p>
+          </div>
+          <button
+            onClick={onClose}
+            className="text-cream hover:text-terracotta text-3xl leading-none"
+            aria-label="close"
+          >
+            ×
+          </button>
+        </div>
+
+        {items.length === 0 ? (
+          <div className="border border-cream/15 p-16 text-center">
+            <p className="font-display text-2xl text-cream/80 italic mb-3">
+              Gallery coming soon.
+            </p>
+            <p className="text-cream/50 text-sm max-w-md mx-auto">
+              Admin can upload images for <em>{name}</em> from the dashboard by tagging
+              uploads with this service name.
+            </p>
+            <a
+              href="#contact"
+              onClick={onClose}
+              className="inline-block mt-6 px-6 py-3 bg-terracotta text-cream text-xs uppercase tracking-[0.22em] hover:bg-clay transition-colors"
+            >
+              Enquire about this service
+            </a>
+          </div>
+        ) : (
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+            {items.map((it) => (
+              <button
+                key={it.id}
+                onClick={() => setViewer(it)}
+                className="group relative aspect-square overflow-hidden border border-cream/10 hover:border-terracotta transition-colors"
+              >
+                {it.type === "video" ? (
+                  <>
+                    <video src={it.url} className="w-full h-full object-cover" muted playsInline />
+                    <span className="absolute top-2 right-2 bg-cream/90 text-charcoal px-2 py-0.5 text-[9px] uppercase tracking-[0.2em]">▶</span>
+                  </>
+                ) : (
+                  <img
+                    src={it.url}
+                    alt={it.name}
+                    loading="lazy"
+                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                  />
+                )}
+              </button>
+            ))}
+          </div>
+        )}
+      </div>
+
+      {viewer && (
+        <div
+          className="fixed inset-0 z-[80] bg-charcoal/98 flex items-center justify-center p-6"
+          onClick={() => setViewer(null)}
+        >
+          <button
+            onClick={() => setViewer(null)}
+            className="absolute top-6 right-6 text-cream hover:text-terracotta text-3xl"
+            aria-label="close"
+          >
+            ×
+          </button>
+          <div className="max-w-5xl w-full" onClick={(e) => e.stopPropagation()}>
+            {viewer.type === "video" ? (
+              <video src={viewer.url} controls autoPlay className="w-full max-h-[85vh] object-contain" />
+            ) : (
+              <img src={viewer.url} alt={viewer.name} className="w-full max-h-[85vh] object-contain" />
+            )}
+            <div className="text-center mt-4 font-display text-xl text-cream">{viewer.name}</div>
+          </div>
+        </div>
+      )}
+    </div>
   );
 }
 

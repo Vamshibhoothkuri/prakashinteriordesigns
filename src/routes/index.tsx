@@ -136,13 +136,13 @@ function Stat({ n, l }: { n: string; l: string }) {
 
 /* -------------------------- SERVICES --------------------------- */
 function Services() {
-  const items = [
-    { n: "01", t: "Residential Design", d: "Homes that reflect the rhythm of your daily life." },
-    { n: "02", t: "Commercial Spaces", d: "Brand-forward environments for hospitality and retail." },
-    { n: "03", t: "3D Visualization", d: "Photorealistic previews before a single wall is touched." },
-    { n: "04", t: "Space Planning", d: "Floor plans engineered around flow and light." },
-    { n: "05", t: "Furniture & Décor", d: "Curated bespoke pieces sourced from our ateliers." },
-    { n: "06", t: "Full Project Management", d: "End-to-end execution from concept to handover." },
+  const residential = [
+    "Modern Kitchen", "Wardrobes", "Cabinets", "Hydraulic Beds", "Sofas",
+    "TV Units", "Curtains", "False Ceiling", "Wallpapers", "Partitions", "Crockery Units",
+  ];
+  const commercial = [
+    "Modern Kitchen", "Partitions", "False Ceiling", "Wallpapers", "Cabinets & Storage",
+    "Curtains", "Crockery & Display Units", "Sofas & Seating", "TV Units",
   ];
   return (
     <section id="services" className="bg-charcoal text-cream py-24 md:py-32 px-6 mt-12">
@@ -151,14 +151,56 @@ function Services() {
           <p className="text-[11px] uppercase tracking-[0.3em] text-terracotta mb-4">What we do</p>
           <h2 className="font-display text-4xl md:text-5xl"><em className="text-clay">Services</em> tailored to every space.</h2>
         </div>
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-px bg-cream/10">
-          {items.map((i) => (
-            <div key={i.n} className="group bg-charcoal hover:bg-terracotta transition-colors duration-500 p-10 min-h-[240px] relative overflow-hidden">
-              <div className="font-display text-7xl text-cream/10 absolute top-4 right-6 group-hover:text-cream/30 transition-colors">{i.n}</div>
-              <h3 className="font-display text-2xl mb-3 relative z-10">{i.t}</h3>
-              <p className="text-cream/70 text-sm leading-relaxed relative z-10">{i.d}</p>
+
+        {/* RESIDENTIAL */}
+        <div className="mb-20">
+          <div className="flex items-end justify-between flex-wrap gap-4 mb-8 border-b border-cream/15 pb-4">
+            <div>
+              <p className="text-[11px] uppercase tracking-[0.3em] text-terracotta mb-2">🏠 Residential Projects</p>
+              <h3 className="font-display text-3xl md:text-4xl">Homes designed to live in.</h3>
             </div>
-          ))}
+            <p className="text-cream/60 text-sm max-w-sm">Duplex Houses · Apartments · Independent Houses</p>
+          </div>
+          <div className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+            {residential.map((s) => (
+              <div key={s} className="group bg-charcoal border border-cream/10 hover:border-terracotta hover:bg-cream/5 transition-all p-6 min-h-[110px] flex items-center">
+                <h4 className="font-display text-xl group-hover:text-terracotta transition-colors">{s}</h4>
+              </div>
+            ))}
+
+            {/* Featured Home Theatre card */}
+            <div className="relative sm:col-span-2 md:col-span-2 lg:col-span-2 row-span-1 overflow-hidden p-8 bg-gradient-to-br from-[#0a0808] via-charcoal to-[#2a1810] border border-terracotta/60 shadow-[0_0_40px_-8px_rgba(155,110,78,0.6)] hover:shadow-[0_0_60px_-4px_rgba(155,110,78,0.9)] transition-shadow">
+              <span className="absolute top-4 right-4 bg-terracotta text-cream px-3 py-1 text-[10px] uppercase tracking-[0.25em] font-medium">★ Premium</span>
+              <div className="absolute -top-20 -left-20 h-60 w-60 rounded-full bg-terracotta/20 blur-3xl pointer-events-none" />
+              <div className="relative">
+                <p className="text-[10px] uppercase tracking-[0.3em] text-terracotta mb-3">Featured Service</p>
+                <h4 className="font-display text-3xl md:text-4xl mb-3 text-cream">
+                  Home Theatre <em className="text-clay">Design</em>
+                </h4>
+                <p className="text-cream/70 text-sm leading-relaxed max-w-md">
+                  Transform a room into a cinematic escape — custom acoustics, lighting, seating and screen design tailored for your home.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* COMMERCIAL */}
+        <div>
+          <div className="flex items-end justify-between flex-wrap gap-4 mb-8 border-b border-cream/15 pb-4">
+            <div>
+              <p className="text-[11px] uppercase tracking-[0.3em] text-terracotta mb-2">🏢 Commercial Projects</p>
+              <h3 className="font-display text-3xl md:text-4xl">Spaces that work as hard as you do.</h3>
+            </div>
+            <p className="text-cream/60 text-sm max-w-sm">Restaurants · Hotels</p>
+          </div>
+          <div className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+            {commercial.map((s) => (
+              <div key={s} className="group bg-charcoal border border-cream/10 hover:border-terracotta hover:bg-cream/5 transition-all p-6 min-h-[110px] flex items-center">
+                <h4 className="font-display text-xl group-hover:text-terracotta transition-colors">{s}</h4>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
     </section>

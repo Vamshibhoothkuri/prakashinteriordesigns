@@ -2,14 +2,11 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useRef, useState } from "react";
 import { Link } from "@tanstack/react-router";
 import { toast } from "sonner";
-import { gallery, type GalleryItem } from "@/lib/admin-auth";
 import { CATEGORIES } from "@/lib/categories";
 import { DesignCard } from "@/components/site/DesignCard";
 import heroImg from "@/assets/hero-interior.jpg";
 import p1 from "@/assets/portfolio-1.jpg";
-import p2 from "@/assets/portfolio-2.jpg";
 import p3 from "@/assets/portfolio-3.jpg";
-import p4 from "@/assets/portfolio-4.jpg";
 import aboutImg from "@/assets/about-studio.jpg";
 
 export const Route = createFileRoute("/")({
@@ -367,17 +364,17 @@ function ContactRow({ label, value }: { label: string; value: string }) {
 /* ---------------------------- FOOTER --------------------------- */
 function Footer() {
   return (
-    <footer className="bg-charcoal text-cream/80 pt-20 pb-8 px-6">
+    <footer className="bg-charcoal text-cream pt-20 pb-8 px-6">
       <div className="max-w-7xl mx-auto grid md:grid-cols-4 gap-10 mb-14">
         <div>
           <div className="font-display text-2xl text-cream mb-4">Luxe<span className="italic text-terracotta">.</span></div>
-          <p className="text-sm text-cream/60 leading-relaxed">Interior design studio crafting warm, timeless spaces for those who live with intention.</p>
+          <p className="text-sm text-cream/85 leading-relaxed">Interior design studio crafting warm, timeless spaces for those who live with intention.</p>
         </div>
         <FooterCol title="Services" items={["Residential", "Commercial", "Visualization", "Furniture"]} />
-        <FooterCol title="Company" items={["About", "Process", "Portfolio", "Contact"]} />
+        <FooterCol title="Company" items={["About", "Process", "Testimonials", "Contact"]} />
         <FooterCol title="Connect" items={["Instagram", "Pinterest", "LinkedIn", "Newsletter"]} />
       </div>
-      <div className="border-t border-cream/10 pt-6 flex flex-col md:flex-row justify-between gap-3 text-xs text-cream/40">
+      <div className="border-t border-cream/20 pt-6 flex flex-col md:flex-row justify-between gap-3 text-xs text-cream/70">
         <div>© {new Date().getFullYear()} Luxe Interiors. All rights reserved.</div>
         <Link to="/login" className="hover:text-terracotta transition-colors">Admin Login</Link>
       </div>
@@ -388,7 +385,7 @@ function FooterCol({ title, items }: { title: string; items: string[] }) {
   return (
     <div>
       <div className="text-[11px] uppercase tracking-[0.25em] text-cream mb-4">{title}</div>
-      <ul className="space-y-2 text-sm text-cream/60">
+      <ul className="space-y-2 text-sm text-cream/85">
         {items.map((i) => <li key={i} className="hover:text-terracotta transition-colors cursor-pointer">{i}</li>)}
       </ul>
     </div>

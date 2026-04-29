@@ -43,8 +43,8 @@ function Nav() {
   const links = [
     { href: "#home", label: "Home" },
     { href: "#services", label: "Services" },
-    { href: "#portfolio", label: "Portfolio" },
     { href: "#process", label: "Process" },
+    { href: "#testimonials", label: "Testimonials" },
     { href: "#about", label: "About" },
     { href: "#contact", label: "Contact" },
   ];

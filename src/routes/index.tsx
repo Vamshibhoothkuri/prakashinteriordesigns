@@ -9,6 +9,20 @@ import p2 from "@/assets/portfolio-2.jpg";
 import p3 from "@/assets/portfolio-3.jpg";
 import p4 from "@/assets/portfolio-4.jpg";
 import aboutImg from "@/assets/about-studio.jpg";
+import svcKitchen from "@/assets/svc-kitchen.jpg";
+import svcWardrobe from "@/assets/svc-wardrobe.jpg";
+import svcCabinets from "@/assets/svc-cabinets.jpg";
+import svcBed from "@/assets/svc-bed.jpg";
+import svcSofa from "@/assets/svc-sofa.jpg";
+import svcTvUnit from "@/assets/svc-tvunit.jpg";
+import svcCurtains from "@/assets/svc-curtains.jpg";
+import svcCeiling from "@/assets/svc-ceiling.jpg";
+import svcWallpaper from "@/assets/svc-wallpaper.jpg";
+import svcPartition from "@/assets/svc-partition.jpg";
+import svcCrockery from "@/assets/svc-crockery.jpg";
+import svcTheatre from "@/assets/svc-theatre.jpg";
+import svcRestaurant from "@/assets/svc-restaurant.jpg";
+import svcHotel from "@/assets/svc-hotel.jpg";
 
 export const Route = createFileRoute("/")({
   component: Index,
@@ -138,29 +152,31 @@ function Stat({ n, l }: { n: string; l: string }) {
 type ServiceDef = { name: string; cover: string; blurb: string };
 
 const RESIDENTIAL_SERVICES: ServiceDef[] = [
-  { name: "Modern Kitchen", cover: p1, blurb: "Sleek modular kitchens with smart storage and premium finishes." },
-  { name: "Wardrobes", cover: p2, blurb: "Walk-ins, sliders and bespoke wardrobes tailored to your space." },
-  { name: "Cabinets", cover: p3, blurb: "Custom cabinetry that blends utility with sculptural beauty." },
-  { name: "Hydraulic Beds", cover: p4, blurb: "Space-saving beds with hydraulic storage, finished in fine veneers." },
-  { name: "Sofas", cover: p2, blurb: "Hand-crafted seating in linens, bouclé and full-grain leathers." },
-  { name: "TV Units", cover: p3, blurb: "Statement media walls integrated with lighting and storage." },
-  { name: "Curtains", cover: p4, blurb: "Drapery in natural fabrics — sheers, blackouts and motorised options." },
-  { name: "False Ceiling", cover: p1, blurb: "Layered ceilings with concealed lighting and acoustic detailing." },
-  { name: "Wallpapers", cover: p2, blurb: "Imported wallpapers, textured panels and bespoke murals." },
-  { name: "Partitions", cover: p3, blurb: "Glass, fluted wood and metal partitions that define without dividing." },
-  { name: "Crockery Units", cover: p4, blurb: "Display crockery units crafted as the centrepiece of your dining." },
+  { name: "Modern Kitchen", cover: svcKitchen, blurb: "Sleek modular kitchens with smart storage and premium finishes." },
+  { name: "Wardrobes", cover: svcWardrobe, blurb: "Walk-ins, sliders and bespoke wardrobes tailored to your space." },
+  { name: "Cabinets", cover: svcCabinets, blurb: "Custom cabinetry that blends utility with sculptural beauty." },
+  { name: "Hydraulic Beds", cover: svcBed, blurb: "Space-saving beds with hydraulic storage, finished in fine veneers." },
+  { name: "Sofas", cover: svcSofa, blurb: "Hand-crafted seating in linens, bouclé and full-grain leathers." },
+  { name: "TV Units", cover: svcTvUnit, blurb: "Statement media walls integrated with lighting and storage." },
+  { name: "Curtains", cover: svcCurtains, blurb: "Drapery in natural fabrics — sheers, blackouts and motorised options." },
+  { name: "False Ceiling", cover: svcCeiling, blurb: "Layered ceilings with concealed lighting and acoustic detailing." },
+  { name: "Wallpapers", cover: svcWallpaper, blurb: "Imported wallpapers, textured panels and bespoke murals." },
+  { name: "Partitions", cover: svcPartition, blurb: "Glass, fluted wood and metal partitions that define without dividing." },
+  { name: "Crockery Units", cover: svcCrockery, blurb: "Display crockery units crafted as the centrepiece of your dining." },
 ];
 
 const COMMERCIAL_SERVICES: ServiceDef[] = [
-  { name: "Modern Kitchen", cover: p1, blurb: "Commercial-grade kitchens engineered for performance and beauty." },
-  { name: "Partitions", cover: p3, blurb: "Functional partitions for restaurants, hotels and workspaces." },
-  { name: "False Ceiling", cover: p2, blurb: "Architectural ceilings tuned for ambience and acoustics." },
-  { name: "Wallpapers", cover: p4, blurb: "Brand-aligned wall finishes for hospitality interiors." },
-  { name: "Cabinets & Storage", cover: p1, blurb: "Back-of-house and front-of-house storage, beautifully detailed." },
-  { name: "Curtains", cover: p2, blurb: "Heavy drapery and sheers tailored for hotels and restaurants." },
-  { name: "Crockery & Display Units", cover: p3, blurb: "Display joinery that elevates the guest experience." },
-  { name: "Sofas & Seating", cover: p4, blurb: "Banquettes, lounge seating and bespoke restaurant chairs." },
-  { name: "TV Units", cover: p1, blurb: "Discreet AV joinery for lobbies, lounges and suites." },
+  { name: "Restaurants", cover: svcRestaurant, blurb: "Warm, atmospheric restaurant interiors crafted for memorable dining." },
+  { name: "Hotels", cover: svcHotel, blurb: "Hospitality interiors — lobbies, suites and lounges with timeless luxury." },
+  { name: "Modern Kitchen", cover: svcKitchen, blurb: "Commercial-grade kitchens engineered for performance and beauty." },
+  { name: "Partitions", cover: svcPartition, blurb: "Functional partitions for restaurants, hotels and workspaces." },
+  { name: "False Ceiling", cover: svcCeiling, blurb: "Architectural ceilings tuned for ambience and acoustics." },
+  { name: "Wallpapers", cover: svcWallpaper, blurb: "Brand-aligned wall finishes for hospitality interiors." },
+  { name: "Cabinets & Storage", cover: svcCabinets, blurb: "Back-of-house and front-of-house storage, beautifully detailed." },
+  { name: "Curtains", cover: svcCurtains, blurb: "Heavy drapery and sheers tailored for hotels and restaurants." },
+  { name: "Crockery & Display Units", cover: svcCrockery, blurb: "Display joinery that elevates the guest experience." },
+  { name: "Sofas & Seating", cover: svcSofa, blurb: "Banquettes, lounge seating and bespoke restaurant chairs." },
+  { name: "TV Units", cover: svcTvUnit, blurb: "Discreet AV joinery for lobbies, lounges and suites." },
 ];
 
 function Services() {
@@ -213,11 +229,18 @@ function Services() {
                     "Transform a room into a cinematic escape — custom acoustics, lighting, seating and screen design tailored for your home.",
                 })
               }
-              className="group relative text-left sm:col-span-2 md:col-span-2 lg:col-span-2 overflow-hidden p-8 bg-gradient-to-br from-[#0a0808] via-charcoal to-[#2a1810] border border-terracotta/60 shadow-[0_0_40px_-8px_rgba(155,110,78,0.6)] hover:shadow-[0_0_60px_-4px_rgba(155,110,78,0.9)] transition-shadow"
+              className="group relative text-left sm:col-span-2 md:col-span-2 lg:col-span-2 overflow-hidden border border-terracotta/60 shadow-[0_0_40px_-8px_rgba(155,110,78,0.6)] hover:shadow-[0_0_60px_-4px_rgba(155,110,78,0.9)] transition-shadow min-h-[320px]"
             >
+              <img
+                src={svcTheatre}
+                alt="Home Theatre Design"
+                loading="lazy"
+                className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+              />
+              <div className="absolute inset-0 bg-gradient-to-br from-charcoal/95 via-charcoal/70 to-charcoal/40" />
               <span className="absolute top-4 right-4 bg-terracotta text-cream px-3 py-1 text-[10px] uppercase tracking-[0.25em] font-medium">★ Premium</span>
               <div className="absolute -top-20 -left-20 h-60 w-60 rounded-full bg-terracotta/20 blur-3xl pointer-events-none" />
-              <div className="relative">
+              <div className="relative p-8">
                 <p className="text-[10px] uppercase tracking-[0.3em] text-terracotta mb-3">Featured Service</p>
                 <h4 className="font-display text-3xl md:text-4xl mb-3 text-cream">
                   Home Theatre <em className="text-clay">Design</em>

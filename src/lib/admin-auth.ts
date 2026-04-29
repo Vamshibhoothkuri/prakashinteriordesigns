@@ -15,6 +15,7 @@ export interface GalleryItem {
   type: "image" | "video";
   name: string;
   category: "residential" | "commercial" | "videos";
+  service?: string;
   createdAt: number;
 }
 

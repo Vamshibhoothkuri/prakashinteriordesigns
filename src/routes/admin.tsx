@@ -9,6 +9,7 @@ function AdminPage() {
   const navigate = useNavigate();
   const [items, setItems] = useState<GalleryItem[]>([]);
   const [category, setCategory] = useState<GalleryItem["category"]>("residential");
+  const [service, setService] = useState<string>("");
   const [dragOver, setDragOver] = useState(false);
   const fileRef = useRef<HTMLInputElement>(null);
 
@@ -30,6 +31,7 @@ function AdminPage() {
           type: file.type.startsWith("video") ? "video" : "image",
           name: file.name.replace(/\.[^.]+$/, ""),
           category,
+          service: service.trim() || undefined,
           createdAt: Date.now(),
         });
         pending--;
@@ -83,6 +85,22 @@ function AdminPage() {
           ))}
         </div>
 
+        <div className="mb-6 flex flex-wrap items-center gap-3">
+          <span className="text-xs uppercase tracking-[0.2em] text-charcoal/60">Tag service (optional):</span>
+          <input
+            value={service}
+            onChange={(e) => setService(e.target.value)}
+            placeholder="e.g. Modern Kitchen, Home Theatre"
+            list="service-suggestions"
+            className="px-4 py-2 text-sm border border-clay/40 bg-cream focus:border-terracotta focus:outline-none min-w-[280px]"
+          />
+          <datalist id="service-suggestions">
+            {["Modern Kitchen","Wardrobes","Cabinets","Hydraulic Beds","Sofas","TV Units","Curtains","False Ceiling","Wallpapers","Partitions","Crockery Units","Home Theatre Design","Restaurants","Hotels"].map((s) => (
+              <option key={s} value={s} />
+            ))}
+          </datalist>
+        </div>
+
         <div
           onDragOver={(e) => { e.preventDefault(); setDragOver(true); }}
           onDragLeave={() => setDragOver(false)}
@@ -111,6 +129,9 @@ function AdminPage() {
                   <div className="absolute inset-0 bg-charcoal/70 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center justify-center gap-3 p-4">
                     <div className="text-cream text-sm text-center">{it.name}</div>
                     <div className="text-[10px] uppercase tracking-[0.2em] text-terracotta">{it.category}</div>
+                    {it.service && (
+                      <div className="text-[10px] uppercase tracking-[0.2em] text-clay">{it.service}</div>
+                    )}
                     <button onClick={() => remove(it.id)} className="px-3 py-1.5 bg-destructive text-destructive-foreground text-[11px] uppercase tracking-[0.2em]">Delete</button>
                   </div>
                 </div>

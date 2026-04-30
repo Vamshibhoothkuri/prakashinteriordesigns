@@ -63,6 +63,9 @@ function Nav() {
               {l.label}
             </a>
           ))}
+          <Link to="/videos" className="hover:text-terracotta transition-colors">
+            Videos
+          </Link>
         </nav>
         <a
           href="#contact"
@@ -85,6 +88,7 @@ function Nav() {
           {links.map((l) => (
             <a key={l.href} href={l.href} onClick={() => setOpen(false)}>{l.label}</a>
           ))}
+          <Link to="/videos" onClick={() => setOpen(false)}>Videos</Link>
           <a href="#contact" onClick={() => setOpen(false)} className="bg-charcoal text-cream px-5 py-2.5 text-center">Consult</a>
         </div>
       )}
@@ -374,7 +378,7 @@ function Footer() {
           <p className="text-sm text-cream/85 leading-relaxed">Interior design studio crafting warm, timeless spaces for those who live with intention.</p>
         </div>
         <FooterCol title="Services" items={["Residential", "Commercial", "Visualization", "Furniture"]} />
-        <FooterCol title="Company" items={["About", "Process", "Testimonials", "Contact"]} />
+        <FooterCol title="Company" items={["About", "Process", "Testimonials", "Videos", "Contact"]} />
         <FooterCol title="Connect" items={["Instagram", "Pinterest", "LinkedIn", "Newsletter"]} />
       </div>
       <div className="border-t border-cream/20 pt-6 flex flex-col md:flex-row justify-between gap-3 text-xs text-cream/70">

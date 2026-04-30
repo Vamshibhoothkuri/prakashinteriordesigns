@@ -140,6 +140,20 @@ function Stat({ n, l }: { n: string; l: string }) {
 
 /* -------------------------- SERVICES --------------------------- */
 function CategoryShowcase() {
+  // Build a flat list of subcategory cards across all categories.
+  const subcards = CATEGORIES.flatMap((c) =>
+    c.subcategories.map((sc) => {
+      const first = c.designs.find((d) => d.subcategory === sc.slug);
+      return {
+        categorySlug: c.slug,
+        categoryName: c.name,
+        subSlug: sc.slug,
+        subName: sc.name,
+        cover: first?.cover ?? c.cover,
+        count: c.designs.filter((d) => d.subcategory === sc.slug).length,
+      };
+    })
+  );
   return (
     <section id="services" className="bg-charcoal text-cream py-24 md:py-32 px-6 mt-12">
       <div className="max-w-7xl mx-auto">
@@ -149,37 +163,37 @@ function CategoryShowcase() {
             Explore <em className="text-clay">designs</em> by category.
           </h2>
           <p className="text-cream/85 text-sm mt-5 max-w-xl">
-            Choose a category to browse the complete collection of designs in that space.
+            Pick a style to see all designs in that collection.
           </p>
         </div>
 
-        {/* Category cards */}
+        {/* Subcategory cards — clicking opens a list of designs in that style */}
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
-          {CATEGORIES.map((c) => (
+          {subcards.map((s) => (
             <Link
-              key={c.slug}
-              to="/category/$category"
-              params={{ category: c.slug }}
+              key={`${s.categorySlug}-${s.subSlug}`}
+              to="/category/$category/$subcategory"
+              params={{ category: s.categorySlug, subcategory: s.subSlug }}
               className="group relative block overflow-hidden aspect-[4/5] border border-cream/15 hover:border-terracotta transition-all"
             >
               <img
-                src={c.cover}
-                alt={c.name}
+                src={s.cover}
+                alt={s.subName}
                 loading="lazy"
                 className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-charcoal via-charcoal/60 to-charcoal/10" />
-              <div className="absolute inset-x-0 bottom-0 p-6 flex items-end justify-between gap-3">
+              <div className="absolute inset-0 bg-gradient-to-t from-charcoal via-charcoal/55 to-charcoal/10" />
+              <div className="absolute inset-x-0 bottom-0 p-5 flex items-end justify-between gap-3">
                 <div>
-                  <h3 className="font-display text-2xl md:text-3xl text-cream leading-tight group-hover:text-terracotta transition-colors">
-                    {c.name}
-                  </h3>
-                  <p className="text-[10px] uppercase tracking-[0.22em] text-cream/70 mt-2">
-                    {c.subcategories.length} sub-categories
+                  <p className="text-[10px] uppercase tracking-[0.22em] text-cream/75">
+                    {s.categoryName}
                   </p>
+                  <h3 className="font-display text-xl md:text-2xl text-cream leading-tight group-hover:text-terracotta transition-colors mt-1">
+                    {s.subName}
+                  </h3>
                 </div>
-                <span className="shrink-0 w-11 h-11 rounded-full bg-cream/95 text-charcoal flex items-center justify-center group-hover:bg-terracotta group-hover:text-cream transition-colors">
-                  <ArrowUpRight size={18} strokeWidth={1.8} />
+                <span className="shrink-0 w-10 h-10 rounded-full bg-cream/95 text-charcoal flex items-center justify-center group-hover:bg-terracotta group-hover:text-cream transition-colors">
+                  <ArrowUpRight size={16} strokeWidth={1.8} />
                 </span>
               </div>
             </Link>

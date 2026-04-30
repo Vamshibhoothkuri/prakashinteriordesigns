@@ -272,7 +272,7 @@ function Process() {
             <div key={s.n} className="relative">
               <div className="font-display text-7xl text-clay/40 mb-2">{s.n}</div>
               <div className="text-[11px] uppercase tracking-[0.25em] text-charcoal mb-3">{s.t}</div>
-              <p className="text-charcoal/70 text-sm leading-relaxed">{s.d}</p>
+              <p className="text-charcoal/85 text-sm leading-relaxed">{s.d}</p>
             </div>
           ))}
         </div>
@@ -316,20 +316,22 @@ function Contact() {
     toast.success("Thank you — we'll be in touch within 2 business days.");
     formRef.current?.reset();
   }
-  const input = "w-full bg-transparent border-b border-charcoal/30 py-3 px-1 focus:outline-none focus:border-terracotta transition-colors text-charcoal placeholder:text-charcoal/40";
+  const input = "w-full bg-cream border border-clay/40 rounded-sm py-2.5 px-3 text-sm focus:outline-none focus:border-terracotta transition-colors text-charcoal placeholder:text-charcoal/50";
   return (
-    <section id="contact" className="py-24 md:py-32 px-6">
-      <div className="max-w-7xl mx-auto grid md:grid-cols-2 gap-16">
-        <div>
-          <p className="text-[11px] uppercase tracking-[0.3em] text-terracotta mb-4">Get in touch</p>
-          <h2 className="font-display text-4xl md:text-5xl mb-10">Let's design something <em>beautiful</em>.</h2>
-          <form ref={formRef} onSubmit={handleSubmit} className="space-y-6">
-            <div className="grid grid-cols-2 gap-5">
+    <section id="contact" className="py-16 md:py-20 px-6 bg-sand/40">
+      <div className="max-w-6xl mx-auto grid md:grid-cols-5 gap-8">
+        <div className="md:col-span-3 bg-cream border border-clay/30 p-6 md:p-8">
+          <p className="text-[11px] uppercase tracking-[0.3em] text-terracotta mb-2">Get in touch</p>
+          <h2 className="font-display text-2xl md:text-3xl mb-6 text-charcoal">Let's design something <em>beautiful</em>.</h2>
+          <form ref={formRef} onSubmit={handleSubmit} className="space-y-3">
+            <div className="grid grid-cols-2 gap-3">
               <input required placeholder="First name" className={input} />
               <input required placeholder="Last name" className={input} />
             </div>
-            <input required type="email" placeholder="Email" className={input} />
-            <input placeholder="Phone" className={input} />
+            <div className="grid grid-cols-2 gap-3">
+              <input required type="email" placeholder="Email" className={input} />
+              <input placeholder="Phone" className={input} />
+            </div>
             <select className={input} defaultValue="">
               <option value="" disabled>Project type</option>
               <option>Residential</option>
@@ -337,13 +339,13 @@ function Contact() {
               <option>Hospitality</option>
               <option>Consultation only</option>
             </select>
-            <textarea required rows={4} placeholder="Tell us about your space" className={input + " resize-none"} />
-            <button type="submit" className="px-8 py-3.5 bg-charcoal text-cream text-xs uppercase tracking-[0.22em] hover:bg-terracotta transition-colors">Send Inquiry</button>
+            <textarea required rows={3} placeholder="Tell us about your space" className={input + " resize-none"} />
+            <button type="submit" className="w-full sm:w-auto px-7 py-3 bg-charcoal text-cream text-xs uppercase tracking-[0.22em] hover:bg-terracotta transition-colors">Send Inquiry</button>
           </form>
         </div>
-        <div className="bg-sand p-10">
-          <h3 className="font-display text-2xl mb-8">Studio</h3>
-          <ul className="space-y-7 text-sm">
+        <div className="md:col-span-2 bg-charcoal text-cream p-6 md:p-8">
+          <h3 className="font-display text-xl mb-5">Studio</h3>
+          <ul className="space-y-5 text-sm">
             <ContactRow label="Address" value="14 Rue de la Lumière, Paris 75004" />
             <ContactRow label="Phone" value="+33 1 42 00 00 00" />
             <ContactRow label="Email" value="studio@luxe-interiors.com" />
@@ -358,7 +360,7 @@ function ContactRow({ label, value }: { label: string; value: string }) {
   return (
     <li>
       <div className="text-[10px] uppercase tracking-[0.25em] text-terracotta mb-1">{label}</div>
-      <div className="text-charcoal">{value}</div>
+      <div className="text-cream/95">{value}</div>
     </li>
   );
 }

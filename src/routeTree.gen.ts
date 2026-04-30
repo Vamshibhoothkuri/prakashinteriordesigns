@@ -9,6 +9,7 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as VideosRouteImport } from './routes/videos'
 import { Route as RegisterRouteImport } from './routes/register'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as AdminRouteImport } from './routes/admin'
@@ -16,6 +17,11 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as DesignSlugRouteImport } from './routes/design.$slug'
 import { Route as CategoryCategoryRouteImport } from './routes/category.$category'
 
+const VideosRoute = VideosRouteImport.update({
+  id: '/videos',
+  path: '/videos',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const RegisterRoute = RegisterRouteImport.update({
   id: '/register',
   path: '/register',
@@ -52,6 +58,7 @@ export interface FileRoutesByFullPath {
   '/admin': typeof AdminRoute
   '/login': typeof LoginRoute
   '/register': typeof RegisterRoute
+  '/videos': typeof VideosRoute
   '/category/$category': typeof CategoryCategoryRoute
   '/design/$slug': typeof DesignSlugRoute
 }
@@ -60,6 +67,7 @@ export interface FileRoutesByTo {
   '/admin': typeof AdminRoute
   '/login': typeof LoginRoute
   '/register': typeof RegisterRoute
+  '/videos': typeof VideosRoute
   '/category/$category': typeof CategoryCategoryRoute
   '/design/$slug': typeof DesignSlugRoute
 }
@@ -69,6 +77,7 @@ export interface FileRoutesById {
   '/admin': typeof AdminRoute
   '/login': typeof LoginRoute
   '/register': typeof RegisterRoute
+  '/videos': typeof VideosRoute
   '/category/$category': typeof CategoryCategoryRoute
   '/design/$slug': typeof DesignSlugRoute
 }
@@ -79,6 +88,7 @@ export interface FileRouteTypes {
     | '/admin'
     | '/login'
     | '/register'
+    | '/videos'
     | '/category/$category'
     | '/design/$slug'
   fileRoutesByTo: FileRoutesByTo
@@ -87,6 +97,7 @@ export interface FileRouteTypes {
     | '/admin'
     | '/login'
     | '/register'
+    | '/videos'
     | '/category/$category'
     | '/design/$slug'
   id:
@@ -95,6 +106,7 @@ export interface FileRouteTypes {
     | '/admin'
     | '/login'
     | '/register'
+    | '/videos'
     | '/category/$category'
     | '/design/$slug'
   fileRoutesById: FileRoutesById
@@ -104,12 +116,20 @@ export interface RootRouteChildren {
   AdminRoute: typeof AdminRoute
   LoginRoute: typeof LoginRoute
   RegisterRoute: typeof RegisterRoute
+  VideosRoute: typeof VideosRoute
   CategoryCategoryRoute: typeof CategoryCategoryRoute
   DesignSlugRoute: typeof DesignSlugRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/videos': {
+      id: '/videos'
+      path: '/videos'
+      fullPath: '/videos'
+      preLoaderRoute: typeof VideosRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/register': {
       id: '/register'
       path: '/register'
@@ -160,6 +180,7 @@ const rootRouteChildren: RootRouteChildren = {
   AdminRoute: AdminRoute,
   LoginRoute: LoginRoute,
   RegisterRoute: RegisterRoute,
+  VideosRoute: VideosRoute,
   CategoryCategoryRoute: CategoryCategoryRoute,
   DesignSlugRoute: DesignSlugRoute,
 }

@@ -57,7 +57,7 @@ function Nav() {
         <a href="#home" className="font-display text-2xl tracking-tight text-charcoal">
           Luxe<span className="italic text-terracotta">.</span>
         </a>
-        <nav className="hidden md:flex items-center gap-9 text-[13px] uppercase tracking-[0.18em] text-charcoal/80">
+        <nav className="hidden md:flex items-center gap-9 text-[13px] uppercase tracking-[0.18em] text-charcoal">
           {links.map((l) => (
             <a key={l.href} href={l.href} className="hover:text-terracotta transition-colors">
               {l.label}
@@ -99,14 +99,14 @@ function Nav() {
 /* ---------------------------- HERO ----------------------------- */
 function Hero() {
   return (
-    <section id="home" className="pt-32 md:pt-40 pb-20 px-6">
+    <section id="home" className="pt-24 md:pt-28 pb-16 px-6">
       <div className="max-w-7xl mx-auto grid md:grid-cols-2 gap-12 items-center">
         <div>
           <p className="text-[11px] uppercase tracking-[0.3em] text-terracotta mb-6">Interior Design Studio — Est. 2015</p>
           <h1 className="font-display text-5xl md:text-7xl leading-[1.05] mb-8">
             Crafting spaces that <em className="text-terracotta font-light">whisper</em> your story.
           </h1>
-          <p className="text-charcoal/70 text-lg max-w-md mb-10 leading-relaxed">
+          <p className="text-charcoal/85 text-lg max-w-md mb-10 leading-relaxed">
             Warm, timeless interiors designed around how you truly live. From intimate residences to considered commercial spaces.
           </p>
           <div className="flex flex-wrap gap-4">
@@ -151,7 +151,7 @@ function CategoryShowcase() {
           <h2 className="font-display text-4xl md:text-5xl">
             Explore <em className="text-clay">designs</em> by category.
           </h2>
-          <p className="text-cream/60 text-sm mt-5 max-w-xl">
+          <p className="text-cream/85 text-sm mt-5 max-w-xl">
             Pick a category to preview a selection of our work, then explore the full collection on the dedicated page.
           </p>
         </div>
@@ -165,7 +165,7 @@ function CategoryShowcase() {
               className={`px-6 py-3 text-[11px] uppercase tracking-[0.25em] transition-all border-b-2 -mb-px ${
                 active === c.slug
                   ? "border-terracotta text-cream"
-                  : "border-transparent text-cream/50 hover:text-cream"
+                  : "border-transparent text-cream/75 hover:text-cream"
               }`}
             >
               {c.name}
@@ -181,11 +181,7 @@ function CategoryShowcase() {
         </div>
 
         {/* Explore More CTA */}
-        <div className="mt-12 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-5 border-t border-cream/15 pt-10">
-          <div>
-            <h3 className="font-display text-2xl md:text-3xl text-cream">{cat.tagline}</h3>
-            <p className="text-cream/50 text-sm mt-2">{cat.description}</p>
-          </div>
+        <div className="mt-10 flex justify-center">
           <Link
             to="/category/$category"
             params={{ category: cat.slug }}
@@ -224,30 +220,29 @@ function Testimonials() {
     },
   ];
   return (
-    <section id="testimonials" className="py-24 md:py-32 px-6 bg-cream">
+    <section id="testimonials" className="py-16 md:py-20 px-6 bg-cream">
       <div className="max-w-7xl mx-auto">
-        <div className="mb-14 max-w-2xl">
-          <p className="text-[11px] uppercase tracking-[0.3em] text-terracotta mb-4">Kind words</p>
-          <h2 className="font-display text-4xl md:text-5xl">
-            What our <em>clients</em> say.
-          </h2>
-          <p className="text-charcoal/70 text-sm mt-5 max-w-xl leading-relaxed">
-            A few notes from the homes, cafés, and offices we've had the privilege to design.
-          </p>
+        <div className="mb-10 flex items-end justify-between flex-wrap gap-4">
+          <div>
+            <p className="text-[11px] uppercase tracking-[0.3em] text-terracotta mb-3">Kind words</p>
+            <h2 className="font-display text-3xl md:text-4xl text-charcoal">
+              What our <em>clients</em> say.
+            </h2>
+          </div>
         </div>
-        <div className="grid sm:grid-cols-2 gap-6">
+        <div className="flex gap-5 overflow-x-auto pb-3 snap-x snap-mandatory md:grid md:grid-cols-4 md:overflow-visible">
           {items.map((t) => (
             <figure
               key={t.name}
-              className="bg-sand p-8 md:p-10 border-l-2 border-terracotta hover:shadow-lg transition-shadow"
+              className="snap-start shrink-0 w-[85%] sm:w-[60%] md:w-auto bg-sand border border-clay/30 p-5 flex flex-col"
             >
-              <div className="font-display text-5xl text-terracotta leading-none mb-3">"</div>
-              <blockquote className="text-charcoal/80 leading-relaxed mb-6 font-display text-xl italic">
-                {t.quote}
+              <div className="text-terracotta text-xl leading-none mb-2">★★★★★</div>
+              <blockquote className="text-charcoal/90 text-sm leading-relaxed mb-4 line-clamp-5">
+                "{t.quote}"
               </blockquote>
-              <figcaption>
+              <figcaption className="mt-auto">
                 <div className="text-charcoal text-sm font-medium">{t.name}</div>
-                <div className="text-[10px] uppercase tracking-[0.25em] text-charcoal/60 mt-1">{t.role}</div>
+                <div className="text-[10px] uppercase tracking-[0.22em] text-charcoal/70 mt-1">{t.role}</div>
               </figcaption>
             </figure>
           ))}
@@ -277,7 +272,7 @@ function Process() {
             <div key={s.n} className="relative">
               <div className="font-display text-7xl text-clay/40 mb-2">{s.n}</div>
               <div className="text-[11px] uppercase tracking-[0.25em] text-charcoal mb-3">{s.t}</div>
-              <p className="text-charcoal/70 text-sm leading-relaxed">{s.d}</p>
+              <p className="text-charcoal/85 text-sm leading-relaxed">{s.d}</p>
             </div>
           ))}
         </div>
@@ -321,20 +316,22 @@ function Contact() {
     toast.success("Thank you — we'll be in touch within 2 business days.");
     formRef.current?.reset();
   }
-  const input = "w-full bg-transparent border-b border-charcoal/30 py-3 px-1 focus:outline-none focus:border-terracotta transition-colors text-charcoal placeholder:text-charcoal/40";
+  const input = "w-full bg-cream border border-clay/40 rounded-sm py-2.5 px-3 text-sm focus:outline-none focus:border-terracotta transition-colors text-charcoal placeholder:text-charcoal/50";
   return (
-    <section id="contact" className="py-24 md:py-32 px-6">
-      <div className="max-w-7xl mx-auto grid md:grid-cols-2 gap-16">
-        <div>
-          <p className="text-[11px] uppercase tracking-[0.3em] text-terracotta mb-4">Get in touch</p>
-          <h2 className="font-display text-4xl md:text-5xl mb-10">Let's design something <em>beautiful</em>.</h2>
-          <form ref={formRef} onSubmit={handleSubmit} className="space-y-6">
-            <div className="grid grid-cols-2 gap-5">
+    <section id="contact" className="py-16 md:py-20 px-6 bg-sand/40">
+      <div className="max-w-6xl mx-auto grid md:grid-cols-5 gap-8">
+        <div className="md:col-span-3 bg-cream border border-clay/30 p-6 md:p-8">
+          <p className="text-[11px] uppercase tracking-[0.3em] text-terracotta mb-2">Get in touch</p>
+          <h2 className="font-display text-2xl md:text-3xl mb-6 text-charcoal">Let's design something <em>beautiful</em>.</h2>
+          <form ref={formRef} onSubmit={handleSubmit} className="space-y-3">
+            <div className="grid grid-cols-2 gap-3">
               <input required placeholder="First name" className={input} />
               <input required placeholder="Last name" className={input} />
             </div>
-            <input required type="email" placeholder="Email" className={input} />
-            <input placeholder="Phone" className={input} />
+            <div className="grid grid-cols-2 gap-3">
+              <input required type="email" placeholder="Email" className={input} />
+              <input placeholder="Phone" className={input} />
+            </div>
             <select className={input} defaultValue="">
               <option value="" disabled>Project type</option>
               <option>Residential</option>
@@ -342,13 +339,13 @@ function Contact() {
               <option>Hospitality</option>
               <option>Consultation only</option>
             </select>
-            <textarea required rows={4} placeholder="Tell us about your space" className={input + " resize-none"} />
-            <button type="submit" className="px-8 py-3.5 bg-charcoal text-cream text-xs uppercase tracking-[0.22em] hover:bg-terracotta transition-colors">Send Inquiry</button>
+            <textarea required rows={3} placeholder="Tell us about your space" className={input + " resize-none"} />
+            <button type="submit" className="w-full sm:w-auto px-7 py-3 bg-charcoal text-cream text-xs uppercase tracking-[0.22em] hover:bg-terracotta transition-colors">Send Inquiry</button>
           </form>
         </div>
-        <div className="bg-sand p-10">
-          <h3 className="font-display text-2xl mb-8">Studio</h3>
-          <ul className="space-y-7 text-sm">
+        <div className="md:col-span-2 bg-charcoal text-cream p-6 md:p-8">
+          <h3 className="font-display text-xl mb-5">Studio</h3>
+          <ul className="space-y-5 text-sm">
             <ContactRow label="Address" value="14 Rue de la Lumière, Paris 75004" />
             <ContactRow label="Phone" value="+33 1 42 00 00 00" />
             <ContactRow label="Email" value="studio@luxe-interiors.com" />
@@ -363,7 +360,7 @@ function ContactRow({ label, value }: { label: string; value: string }) {
   return (
     <li>
       <div className="text-[10px] uppercase tracking-[0.25em] text-terracotta mb-1">{label}</div>
-      <div className="text-charcoal">{value}</div>
+      <div className="text-cream/95">{value}</div>
     </li>
   );
 }

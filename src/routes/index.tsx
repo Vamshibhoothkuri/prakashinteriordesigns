@@ -220,30 +220,29 @@ function Testimonials() {
     },
   ];
   return (
-    <section id="testimonials" className="py-24 md:py-32 px-6 bg-cream">
+    <section id="testimonials" className="py-16 md:py-20 px-6 bg-cream">
       <div className="max-w-7xl mx-auto">
-        <div className="mb-14 max-w-2xl">
-          <p className="text-[11px] uppercase tracking-[0.3em] text-terracotta mb-4">Kind words</p>
-          <h2 className="font-display text-4xl md:text-5xl">
-            What our <em>clients</em> say.
-          </h2>
-          <p className="text-charcoal/70 text-sm mt-5 max-w-xl leading-relaxed">
-            A few notes from the homes, cafés, and offices we've had the privilege to design.
-          </p>
+        <div className="mb-10 flex items-end justify-between flex-wrap gap-4">
+          <div>
+            <p className="text-[11px] uppercase tracking-[0.3em] text-terracotta mb-3">Kind words</p>
+            <h2 className="font-display text-3xl md:text-4xl text-charcoal">
+              What our <em>clients</em> say.
+            </h2>
+          </div>
         </div>
-        <div className="grid sm:grid-cols-2 gap-6">
+        <div className="flex gap-5 overflow-x-auto pb-3 snap-x snap-mandatory md:grid md:grid-cols-4 md:overflow-visible">
           {items.map((t) => (
             <figure
               key={t.name}
-              className="bg-sand p-8 md:p-10 border-l-2 border-terracotta hover:shadow-lg transition-shadow"
+              className="snap-start shrink-0 w-[85%] sm:w-[60%] md:w-auto bg-sand border border-clay/30 p-5 flex flex-col"
             >
-              <div className="font-display text-5xl text-terracotta leading-none mb-3">"</div>
-              <blockquote className="text-charcoal/80 leading-relaxed mb-6 font-display text-xl italic">
-                {t.quote}
+              <div className="text-terracotta text-xl leading-none mb-2">★★★★★</div>
+              <blockquote className="text-charcoal/90 text-sm leading-relaxed mb-4 line-clamp-5">
+                "{t.quote}"
               </blockquote>
-              <figcaption>
+              <figcaption className="mt-auto">
                 <div className="text-charcoal text-sm font-medium">{t.name}</div>
-                <div className="text-[10px] uppercase tracking-[0.25em] text-charcoal/60 mt-1">{t.role}</div>
+                <div className="text-[10px] uppercase tracking-[0.22em] text-charcoal/70 mt-1">{t.role}</div>
               </figcaption>
             </figure>
           ))}

@@ -57,7 +57,7 @@ function Nav() {
         <a href="#home" className="font-display text-2xl tracking-tight text-charcoal">
           Luxe<span className="italic text-terracotta">.</span>
         </a>
-        <nav className="hidden md:flex items-center gap-9 text-[13px] uppercase tracking-[0.18em] text-charcoal/80">
+        <nav className="hidden md:flex items-center gap-9 text-[13px] uppercase tracking-[0.18em] text-charcoal">
           {links.map((l) => (
             <a key={l.href} href={l.href} className="hover:text-terracotta transition-colors">
               {l.label}
@@ -99,14 +99,14 @@ function Nav() {
 /* ---------------------------- HERO ----------------------------- */
 function Hero() {
   return (
-    <section id="home" className="pt-32 md:pt-40 pb-20 px-6">
+    <section id="home" className="pt-24 md:pt-28 pb-16 px-6">
       <div className="max-w-7xl mx-auto grid md:grid-cols-2 gap-12 items-center">
         <div>
           <p className="text-[11px] uppercase tracking-[0.3em] text-terracotta mb-6">Interior Design Studio — Est. 2015</p>
           <h1 className="font-display text-5xl md:text-7xl leading-[1.05] mb-8">
             Crafting spaces that <em className="text-terracotta font-light">whisper</em> your story.
           </h1>
-          <p className="text-charcoal/70 text-lg max-w-md mb-10 leading-relaxed">
+          <p className="text-charcoal/85 text-lg max-w-md mb-10 leading-relaxed">
             Warm, timeless interiors designed around how you truly live. From intimate residences to considered commercial spaces.
           </p>
           <div className="flex flex-wrap gap-4">
@@ -151,7 +151,7 @@ function CategoryShowcase() {
           <h2 className="font-display text-4xl md:text-5xl">
             Explore <em className="text-clay">designs</em> by category.
           </h2>
-          <p className="text-cream/60 text-sm mt-5 max-w-xl">
+          <p className="text-cream/85 text-sm mt-5 max-w-xl">
             Pick a category to preview a selection of our work, then explore the full collection on the dedicated page.
           </p>
         </div>
@@ -165,7 +165,7 @@ function CategoryShowcase() {
               className={`px-6 py-3 text-[11px] uppercase tracking-[0.25em] transition-all border-b-2 -mb-px ${
                 active === c.slug
                   ? "border-terracotta text-cream"
-                  : "border-transparent text-cream/50 hover:text-cream"
+                  : "border-transparent text-cream/75 hover:text-cream"
               }`}
             >
               {c.name}
@@ -181,11 +181,7 @@ function CategoryShowcase() {
         </div>
 
         {/* Explore More CTA */}
-        <div className="mt-12 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-5 border-t border-cream/15 pt-10">
-          <div>
-            <h3 className="font-display text-2xl md:text-3xl text-cream">{cat.tagline}</h3>
-            <p className="text-cream/50 text-sm mt-2">{cat.description}</p>
-          </div>
+        <div className="mt-10 flex justify-center">
           <Link
             to="/category/$category"
             params={{ category: cat.slug }}

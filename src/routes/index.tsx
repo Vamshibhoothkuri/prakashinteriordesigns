@@ -3,7 +3,8 @@ import { useEffect, useRef, useState } from "react";
 import { Link } from "@tanstack/react-router";
 import { toast } from "sonner";
 import { CATEGORIES } from "@/lib/categories";
-import { DesignCard } from "@/components/site/DesignCard";
+import { enquiriesStore } from "@/lib/admin-auth";
+import { ArrowUpRight } from "lucide-react";
 import heroImg from "@/assets/hero-interior.jpg";
 import p1 from "@/assets/portfolio-1.jpg";
 import p3 from "@/assets/portfolio-3.jpg";
@@ -139,10 +140,6 @@ function Stat({ n, l }: { n: string; l: string }) {
 
 /* -------------------------- SERVICES --------------------------- */
 function CategoryShowcase() {
-  const [active, setActive] = useState<string>(CATEGORIES[0].slug);
-  const cat = CATEGORIES.find((c) => c.slug === active) ?? CATEGORIES[0];
-  const preview = cat.designs.slice(0, 8);
-
   return (
     <section id="services" className="bg-charcoal text-cream py-24 md:py-32 px-6 mt-12">
       <div className="max-w-7xl mx-auto">
@@ -152,43 +149,41 @@ function CategoryShowcase() {
             Explore <em className="text-clay">designs</em> by category.
           </h2>
           <p className="text-cream/85 text-sm mt-5 max-w-xl">
-            Pick a category to preview a selection of our work, then explore the full collection on the dedicated page.
+            Choose a category to browse the complete collection of designs in that space.
           </p>
         </div>
 
-        {/* Category tabs */}
-        <div className="flex flex-wrap gap-2 mb-10 border-b border-cream/15">
+        {/* Category cards */}
+        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
           {CATEGORIES.map((c) => (
-            <button
+            <Link
               key={c.slug}
-              onClick={() => setActive(c.slug)}
-              className={`px-6 py-3 text-[11px] uppercase tracking-[0.25em] transition-all border-b-2 -mb-px ${
-                active === c.slug
-                  ? "border-terracotta text-cream"
-                  : "border-transparent text-cream/75 hover:text-cream"
-              }`}
+              to="/category/$category"
+              params={{ category: c.slug }}
+              className="group relative block overflow-hidden aspect-[4/5] border border-cream/15 hover:border-terracotta transition-all"
             >
-              {c.name}
-            </button>
+              <img
+                src={c.cover}
+                alt={c.name}
+                loading="lazy"
+                className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-charcoal via-charcoal/60 to-charcoal/10" />
+              <div className="absolute inset-x-0 bottom-0 p-6 flex items-end justify-between gap-3">
+                <div>
+                  <h3 className="font-display text-2xl md:text-3xl text-cream leading-tight group-hover:text-terracotta transition-colors">
+                    {c.name}
+                  </h3>
+                  <p className="text-[10px] uppercase tracking-[0.22em] text-cream/70 mt-2">
+                    {c.subcategories.length} sub-categories
+                  </p>
+                </div>
+                <span className="shrink-0 w-11 h-11 rounded-full bg-cream/95 text-charcoal flex items-center justify-center group-hover:bg-terracotta group-hover:text-cream transition-colors">
+                  <ArrowUpRight size={18} strokeWidth={1.8} />
+                </span>
+              </div>
+            </Link>
           ))}
-        </div>
-
-        {/* Preview grid */}
-        <div className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5">
-          {preview.map((d) => (
-            <DesignCard key={d.slug} design={d} />
-          ))}
-        </div>
-
-        {/* Explore More CTA */}
-        <div className="mt-10 flex justify-center">
-          <Link
-            to="/category/$category"
-            params={{ category: cat.slug }}
-            className="inline-flex items-center gap-3 px-7 py-3.5 bg-terracotta text-cream text-xs uppercase tracking-[0.22em] hover:bg-clay transition-colors whitespace-nowrap"
-          >
-            Explore All {cat.name} →
-          </Link>
         </div>
       </div>
     </section>
@@ -313,6 +308,18 @@ function Contact() {
   const formRef = useRef<HTMLFormElement>(null);
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
+    const form = e.currentTarget as HTMLFormElement;
+    const fd = new FormData(form);
+    enquiriesStore.add({
+      id: crypto.randomUUID(),
+      firstName: String(fd.get("firstName") ?? ""),
+      lastName: String(fd.get("lastName") ?? ""),
+      email: String(fd.get("email") ?? ""),
+      phone: String(fd.get("phone") ?? "") || undefined,
+      projectType: String(fd.get("projectType") ?? "") || undefined,
+      message: String(fd.get("message") ?? ""),
+      createdAt: Date.now(),
+    });
     toast.success("Thank you — we'll be in touch within 2 business days.");
     formRef.current?.reset();
   }
@@ -325,21 +332,21 @@ function Contact() {
           <h2 className="font-display text-2xl md:text-3xl mb-6 text-charcoal">Let's design something <em>beautiful</em>.</h2>
           <form ref={formRef} onSubmit={handleSubmit} className="space-y-3">
             <div className="grid grid-cols-2 gap-3">
-              <input required placeholder="First name" className={input} />
-              <input required placeholder="Last name" className={input} />
+              <input name="firstName" required placeholder="First name" className={input} />
+              <input name="lastName" required placeholder="Last name" className={input} />
             </div>
             <div className="grid grid-cols-2 gap-3">
-              <input required type="email" placeholder="Email" className={input} />
-              <input placeholder="Phone" className={input} />
+              <input name="email" required type="email" placeholder="Email" className={input} />
+              <input name="phone" placeholder="Phone" className={input} />
             </div>
-            <select className={input} defaultValue="">
+            <select name="projectType" className={input} defaultValue="">
               <option value="" disabled>Project type</option>
               <option>Residential</option>
               <option>Commercial</option>
               <option>Hospitality</option>
               <option>Consultation only</option>
             </select>
-            <textarea required rows={3} placeholder="Tell us about your space" className={input + " resize-none"} />
+            <textarea name="message" required rows={3} placeholder="Tell us about your space" className={input + " resize-none"} />
             <button type="submit" className="w-full sm:w-auto px-7 py-3 bg-charcoal text-cream text-xs uppercase tracking-[0.22em] hover:bg-terracotta transition-colors">Send Inquiry</button>
           </form>
         </div>

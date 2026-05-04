@@ -2,6 +2,7 @@ import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useEffect, useRef, useState } from "react";
 import { toast } from "sonner";
 import { adminAuth, gallery, type GalleryItem } from "@/lib/admin-auth";
+import { CATEGORIES } from "@/lib/categories";
 
 export const Route = createFileRoute("/admin")({ component: AdminPage });
 
@@ -90,15 +91,18 @@ function AdminPage() {
           <input
             value={service}
             onChange={(e) => setService(e.target.value)}
-            placeholder="e.g. Modern Kitchen, Home Theatre"
+            placeholder="Tag a design (e.g. Modern Modular Kitchen)"
             list="service-suggestions"
             className="px-4 py-2 text-sm border border-clay/40 bg-cream focus:border-terracotta focus:outline-none min-w-[280px]"
           />
           <datalist id="service-suggestions">
-            {["Modern Kitchen","Wardrobes","Cabinets","Hydraulic Beds","Sofas","TV Units","Curtains","False Ceiling","Wallpapers","Partitions","Crockery Units","Home Theatre Design","Restaurants","Hotels"].map((s) => (
+            {CATEGORIES.flatMap((c) => c.designs.map((d) => d.title)).map((s) => (
               <option key={s} value={s} />
             ))}
           </datalist>
+          <p className="w-full text-[11px] text-charcoal/60 mt-1">
+            Tip: tag uploads with a design title to make them appear on that design's page.
+          </p>
         </div>
 
         <div

@@ -1,6 +1,7 @@
 import { createFileRoute, Link, notFound, useParams } from "@tanstack/react-router";
-import { useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { getDesign, getCategory } from "@/lib/categories";
+import { gallery, type GalleryItem } from "@/lib/admin-auth";
 
 export const Route = createFileRoute("/design/$slug")({
   head: ({ params }) => {
@@ -36,7 +37,29 @@ function DesignPage() {
   const design = getDesign(slug)!;
   const category = getCategory(design.category);
   const [active, setActive] = useState(0);
-  const images = design.gallery.length ? design.gallery : [design.cover];
+
+  const [uploads, setUploads] = useState<GalleryItem[]>([]);
+  useEffect(() => {
+    const norm = (s: string) => s.toLowerCase().replace(/[^a-z0-9]+/g, "");
+    const target = norm(design.title);
+    const targetSlug = norm(design.slug);
+    setUploads(
+      gallery.getAll().filter((it) => {
+        if (!it.service) return false;
+        const s = norm(it.service);
+        return s === target || s === targetSlug || s.includes(target) || target.includes(s);
+      })
+    );
+  }, [design.slug, design.title]);
+
+  const uploadedPhotos = useMemo(() => uploads.filter((u) => u.type === "image"), [uploads]);
+  const uploadedVideos = useMemo(() => uploads.filter((u) => u.type === "video"), [uploads]);
+  const [lightbox, setLightbox] = useState<GalleryItem | null>(null);
+
+  const images = [
+    ...(design.gallery.length ? design.gallery : [design.cover]),
+    ...uploadedPhotos.map((u) => u.url),
+  ];
 
   return (
     <div className="min-h-screen bg-cream text-charcoal pt-28 pb-24">
@@ -130,7 +153,98 @@ function DesignPage() {
             </Link>
           </div>
         </div>
+
+        {(uploadedPhotos.length > 0 || uploadedVideos.length > 0) && (
+          <section className="mt-20 border-t border-clay/30 pt-14">
+            <p className="text-[11px] uppercase tracking-[0.3em] text-terracotta mb-3">
+              From our recent work
+            </p>
+            <h2 className="font-display text-3xl md:text-4xl mb-8">
+              Project <em>photos & videos</em>.
+            </h2>
+
+            {uploadedPhotos.length > 0 && (
+              <div className="mb-12">
+                <h3 className="text-[11px] uppercase tracking-[0.25em] text-charcoal/70 mb-4">
+                  Photos ({uploadedPhotos.length})
+                </h3>
+                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                  {uploadedPhotos.map((p) => (
+                    <button
+                      key={p.id}
+                      onClick={() => setLightbox(p)}
+                      className="group aspect-square overflow-hidden border border-clay/30 hover:border-terracotta transition-colors"
+                    >
+                      <img
+                        src={p.url}
+                        alt={p.name}
+                        loading="lazy"
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                      />
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {uploadedVideos.length > 0 && (
+              <div>
+                <h3 className="text-[11px] uppercase tracking-[0.25em] text-charcoal/70 mb-4">
+                  Videos ({uploadedVideos.length})
+                </h3>
+                <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
+                  {uploadedVideos.map((v) => (
+                    <button
+                      key={v.id}
+                      onClick={() => setLightbox(v)}
+                      className="group relative aspect-video overflow-hidden border border-clay/30 hover:border-terracotta transition-colors bg-charcoal"
+                    >
+                      <video src={v.url} className="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity" muted />
+                      <div className="absolute inset-0 flex items-center justify-center">
+                        <div className="w-14 h-14 rounded-full bg-terracotta/90 flex items-center justify-center group-hover:scale-110 transition-transform">
+                          <svg width="20" height="20" viewBox="0 0 24 24" fill="white">
+                            <path d="M8 5v14l11-7z" />
+                          </svg>
+                        </div>
+                      </div>
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
+          </section>
+        )}
       </div>
+
+      {lightbox && (
+        <div
+          onClick={() => setLightbox(null)}
+          className="fixed inset-0 z-50 bg-charcoal/95 flex items-center justify-center p-6"
+        >
+          <button
+            onClick={() => setLightbox(null)}
+            className="absolute top-6 right-6 text-cream text-xs uppercase tracking-[0.2em] hover:text-terracotta"
+          >
+            ✕ Close
+          </button>
+          {lightbox.type === "video" ? (
+            <video
+              src={lightbox.url}
+              controls
+              autoPlay
+              onClick={(e) => e.stopPropagation()}
+              className="max-w-full max-h-[85vh]"
+            />
+          ) : (
+            <img
+              src={lightbox.url}
+              alt={lightbox.name}
+              onClick={(e) => e.stopPropagation()}
+              className="max-w-full max-h-[85vh] object-contain"
+            />
+          )}
+        </div>
+      )}
     </div>
   );
 }

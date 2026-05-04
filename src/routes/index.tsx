@@ -2,8 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useRef, useState } from "react";
 import { Link } from "@tanstack/react-router";
 import { toast } from "sonner";
-import { CATEGORIES } from "@/lib/categories";
-import { DesignCard } from "@/components/site/DesignCard";
+import { TAXONOMY } from "@/lib/taxonomy";
 import { enquiries, type Enquiry } from "@/lib/admin-auth";
 import heroImg from "@/assets/hero-interior.jpg";
 import p1 from "@/assets/portfolio-1.jpg";
@@ -140,56 +139,40 @@ function Stat({ n, l }: { n: string; l: string }) {
 
 /* -------------------------- SERVICES --------------------------- */
 function CategoryShowcase() {
-  const [active, setActive] = useState<string>(CATEGORIES[0].slug);
-  const cat = CATEGORIES.find((c) => c.slug === active) ?? CATEGORIES[0];
-  const preview = cat.designs.slice(0, 8);
-
   return (
     <section id="services" className="bg-charcoal text-cream py-24 md:py-32 px-6 mt-12">
       <div className="max-w-7xl mx-auto">
         <div className="mb-12 max-w-2xl">
           <p className="text-[11px] uppercase tracking-[0.3em] text-terracotta mb-4">Browse our work</p>
           <h2 className="font-display text-4xl md:text-5xl">
-            Explore <em className="text-clay">designs</em> by category.
+            Explore by <em className="text-clay">category</em>.
           </h2>
           <p className="text-cream/85 text-sm mt-5 max-w-xl">
-            Pick a category to preview a selection of our work, then explore the full collection on the dedicated page.
+            Choose a space type to dive into sub-categories, design types and project galleries.
           </p>
         </div>
 
-        {/* Category tabs */}
-        <div className="flex flex-wrap gap-2 mb-10 border-b border-cream/15">
-          {CATEGORIES.map((c) => (
-            <button
+        <div className="grid md:grid-cols-2 gap-6">
+          {TAXONOMY.map((c) => (
+            <Link
               key={c.slug}
-              onClick={() => setActive(c.slug)}
-              className={`px-6 py-3 text-[11px] uppercase tracking-[0.25em] transition-all border-b-2 -mb-px ${
-                active === c.slug
-                  ? "border-terracotta text-cream"
-                  : "border-transparent text-cream/75 hover:text-cream"
-              }`}
+              to="/category/$category"
+              params={{ category: c.slug }}
+              className="group relative block overflow-hidden aspect-[4/3] border border-cream/15 hover:border-terracotta transition-all"
             >
-              {c.name}
-            </button>
+              <img src={c.cover} alt={c.name} loading="lazy"
+                className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
+              <div className="absolute inset-0 bg-gradient-to-t from-charcoal via-charcoal/70 to-charcoal/20" />
+              <div className="absolute inset-x-0 bottom-0 p-7">
+                <p className="text-[11px] uppercase tracking-[0.3em] text-terracotta mb-2">{c.subcategories.length} sub-categories</p>
+                <h3 className="font-display text-3xl md:text-4xl text-white mb-2">{c.name}</h3>
+                <p className="text-cream/85 text-sm mb-4 max-w-md">{c.tagline}</p>
+                <span className="inline-flex items-center gap-2 px-5 py-2.5 bg-terracotta text-cream text-[11px] uppercase tracking-[0.22em] group-hover:bg-cream group-hover:text-charcoal transition-colors">
+                  Explore →
+                </span>
+              </div>
+            </Link>
           ))}
-        </div>
-
-        {/* Preview grid */}
-        <div className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5">
-          {preview.map((d) => (
-            <DesignCard key={d.slug} design={d} />
-          ))}
-        </div>
-
-        {/* Explore More CTA */}
-        <div className="mt-10 flex justify-center">
-          <Link
-            to="/category/$category"
-            params={{ category: cat.slug }}
-            className="inline-flex items-center gap-3 px-7 py-3.5 bg-terracotta text-cream text-xs uppercase tracking-[0.22em] hover:bg-clay transition-colors whitespace-nowrap"
-          >
-            Explore All {cat.name} →
-          </Link>
         </div>
       </div>
     </section>

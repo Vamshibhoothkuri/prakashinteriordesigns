@@ -15,8 +15,11 @@ export interface GalleryItem {
   url: string;
   type: "image" | "video";
   name: string;
-  category: "residential" | "commercial" | "videos";
-  service?: string;
+  category: string; // residential | commercial | videos (legacy)
+  subcategory?: string; // e.g. bedroom, kitchen
+  typeSlug?: string; // e.g. master-bedroom
+  propertyType?: string; // duplex | apartment | independent (residential only)
+  service?: string; // legacy free-text tag
   createdAt: number;
 }
 

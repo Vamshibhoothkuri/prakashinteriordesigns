@@ -2,6 +2,7 @@ const ADMIN_KEY = "LUXE_ADMIN_2025";
 const CRED_KEY = "luxe_admin_credentials";
 const SESSION_KEY = "luxe_is_admin_logged_in";
 const GALLERY_KEY = "luxe_gallery_items";
+const ENQUIRIES_KEY = "luxe_enquiries";
 
 export interface AdminCredentials {
   name: string;
@@ -16,6 +17,17 @@ export interface GalleryItem {
   name: string;
   category: "residential" | "commercial" | "videos";
   service?: string;
+  createdAt: number;
+}
+
+export interface Enquiry {
+  id: string;
+  firstName: string;
+  lastName: string;
+  email: string;
+  phone?: string;
+  projectType?: string;
+  message: string;
   createdAt: number;
 }
 
@@ -70,5 +82,21 @@ export const gallery = {
   },
   clear() {
     localStorage.removeItem(GALLERY_KEY);
+  },
+};
+
+export const enquiries = {
+  getAll(): Enquiry[] {
+    if (typeof window === "undefined") return [];
+    const raw = localStorage.getItem(ENQUIRIES_KEY);
+    return raw ? JSON.parse(raw) : [];
+  },
+  add(e: Enquiry) {
+    const cur = enquiries.getAll();
+    localStorage.setItem(ENQUIRIES_KEY, JSON.stringify([e, ...cur]));
+  },
+  remove(id: string) {
+    const cur = enquiries.getAll().filter((e) => e.id !== id);
+    localStorage.setItem(ENQUIRIES_KEY, JSON.stringify(cur));
   },
 };

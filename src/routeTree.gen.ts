@@ -16,7 +16,6 @@ import { Route as AdminRouteImport } from './routes/admin'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as DesignSlugRouteImport } from './routes/design.$slug'
 import { Route as CategoryCategoryRouteImport } from './routes/category.$category'
-import { Route as CategoryCategorySubcategoryRouteImport } from './routes/category.$category.$subcategory'
 
 const VideosRoute = VideosRouteImport.update({
   id: '/videos',
@@ -53,12 +52,6 @@ const CategoryCategoryRoute = CategoryCategoryRouteImport.update({
   path: '/category/$category',
   getParentRoute: () => rootRouteImport,
 } as any)
-const CategoryCategorySubcategoryRoute =
-  CategoryCategorySubcategoryRouteImport.update({
-    id: '/$subcategory',
-    path: '/$subcategory',
-    getParentRoute: () => CategoryCategoryRoute,
-  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -66,9 +59,8 @@ export interface FileRoutesByFullPath {
   '/login': typeof LoginRoute
   '/register': typeof RegisterRoute
   '/videos': typeof VideosRoute
-  '/category/$category': typeof CategoryCategoryRouteWithChildren
+  '/category/$category': typeof CategoryCategoryRoute
   '/design/$slug': typeof DesignSlugRoute
-  '/category/$category/$subcategory': typeof CategoryCategorySubcategoryRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -76,9 +68,8 @@ export interface FileRoutesByTo {
   '/login': typeof LoginRoute
   '/register': typeof RegisterRoute
   '/videos': typeof VideosRoute
-  '/category/$category': typeof CategoryCategoryRouteWithChildren
+  '/category/$category': typeof CategoryCategoryRoute
   '/design/$slug': typeof DesignSlugRoute
-  '/category/$category/$subcategory': typeof CategoryCategorySubcategoryRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -87,9 +78,8 @@ export interface FileRoutesById {
   '/login': typeof LoginRoute
   '/register': typeof RegisterRoute
   '/videos': typeof VideosRoute
-  '/category/$category': typeof CategoryCategoryRouteWithChildren
+  '/category/$category': typeof CategoryCategoryRoute
   '/design/$slug': typeof DesignSlugRoute
-  '/category/$category/$subcategory': typeof CategoryCategorySubcategoryRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -101,7 +91,6 @@ export interface FileRouteTypes {
     | '/videos'
     | '/category/$category'
     | '/design/$slug'
-    | '/category/$category/$subcategory'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -111,7 +100,6 @@ export interface FileRouteTypes {
     | '/videos'
     | '/category/$category'
     | '/design/$slug'
-    | '/category/$category/$subcategory'
   id:
     | '__root__'
     | '/'
@@ -121,7 +109,6 @@ export interface FileRouteTypes {
     | '/videos'
     | '/category/$category'
     | '/design/$slug'
-    | '/category/$category/$subcategory'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -130,7 +117,7 @@ export interface RootRouteChildren {
   LoginRoute: typeof LoginRoute
   RegisterRoute: typeof RegisterRoute
   VideosRoute: typeof VideosRoute
-  CategoryCategoryRoute: typeof CategoryCategoryRouteWithChildren
+  CategoryCategoryRoute: typeof CategoryCategoryRoute
   DesignSlugRoute: typeof DesignSlugRoute
 }
 
@@ -185,26 +172,8 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CategoryCategoryRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/category/$category/$subcategory': {
-      id: '/category/$category/$subcategory'
-      path: '/$subcategory'
-      fullPath: '/category/$category/$subcategory'
-      preLoaderRoute: typeof CategoryCategorySubcategoryRouteImport
-      parentRoute: typeof CategoryCategoryRoute
-    }
   }
 }
-
-interface CategoryCategoryRouteChildren {
-  CategoryCategorySubcategoryRoute: typeof CategoryCategorySubcategoryRoute
-}
-
-const CategoryCategoryRouteChildren: CategoryCategoryRouteChildren = {
-  CategoryCategorySubcategoryRoute: CategoryCategorySubcategoryRoute,
-}
-
-const CategoryCategoryRouteWithChildren =
-  CategoryCategoryRoute._addFileChildren(CategoryCategoryRouteChildren)
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
@@ -212,7 +181,7 @@ const rootRouteChildren: RootRouteChildren = {
   LoginRoute: LoginRoute,
   RegisterRoute: RegisterRoute,
   VideosRoute: VideosRoute,
-  CategoryCategoryRoute: CategoryCategoryRouteWithChildren,
+  CategoryCategoryRoute: CategoryCategoryRoute,
   DesignSlugRoute: DesignSlugRoute,
 }
 export const routeTree = rootRouteImport

@@ -1,14 +1,16 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useEffect, useRef, useState } from "react";
 import { toast } from "sonner";
-import { adminAuth, gallery, type GalleryItem } from "@/lib/admin-auth";
+import { adminAuth, gallery, enquiries, type GalleryItem, type Enquiry } from "@/lib/admin-auth";
 import { CATEGORIES } from "@/lib/categories";
 
 export const Route = createFileRoute("/admin")({ component: AdminPage });
 
 function AdminPage() {
   const navigate = useNavigate();
+  const [tab, setTab] = useState<"uploads" | "enquiries">("uploads");
   const [items, setItems] = useState<GalleryItem[]>([]);
+  const [enqs, setEnqs] = useState<Enquiry[]>([]);
   const [category, setCategory] = useState<GalleryItem["category"]>("residential");
   const [service, setService] = useState<string>("");
   const [dragOver, setDragOver] = useState(false);
@@ -17,6 +19,7 @@ function AdminPage() {
   useEffect(() => {
     if (!adminAuth.isLoggedIn()) { navigate({ to: "/login" }); return; }
     setItems(gallery.getAll());
+    setEnqs(enquiries.getAll());
   }, [navigate]);
 
   function handleFiles(files: FileList | null) {
@@ -69,8 +72,24 @@ function AdminPage() {
 
       <main className="max-w-7xl mx-auto px-6 py-12">
         <p className="text-[11px] uppercase tracking-[0.3em] text-terracotta mb-3">Dashboard</p>
-        <h1 className="font-display text-4xl md:text-5xl mb-10">Manage <em>portfolio</em>.</h1>
+        <h1 className="font-display text-4xl md:text-5xl mb-8">Owner <em>dashboard</em>.</h1>
 
+        <div className="flex gap-2 mb-10 border-b border-clay/30">
+          {([["uploads", "Uploads"], ["enquiries", `Enquiries (${enqs.length})`]] as const).map(([k, l]) => (
+            <button
+              key={k}
+              onClick={() => setTab(k)}
+              className={`px-5 py-3 text-[11px] uppercase tracking-[0.22em] border-b-2 -mb-px ${
+                tab === k ? "border-terracotta text-charcoal" : "border-transparent text-charcoal/60 hover:text-charcoal"
+              }`}
+            >
+              {l}
+            </button>
+          ))}
+        </div>
+
+        {tab === "uploads" && (
+        <>
         <div className="mb-6 flex flex-wrap items-center gap-3">
           <span className="text-xs uppercase tracking-[0.2em] text-charcoal/60">Upload to:</span>
           {(["residential", "commercial", "videos"] as const).map((c) => (
@@ -143,6 +162,51 @@ function AdminPage() {
             </div>
           )}
         </div>
+        </>
+        )}
+
+        {tab === "enquiries" && (
+          <div>
+            <h2 className="font-display text-2xl mb-6">Client enquiries</h2>
+            {enqs.length === 0 ? (
+              <p className="text-charcoal/50 italic font-display text-lg">No enquiries yet.</p>
+            ) : (
+              <div className="space-y-4">
+                {enqs.map((e) => (
+                  <div key={e.id} className="border border-clay/30 bg-cream p-5">
+                    <div className="flex items-start justify-between flex-wrap gap-3 mb-3">
+                      <div>
+                        <div className="font-display text-xl text-charcoal">{e.firstName} {e.lastName}</div>
+                        <div className="text-[11px] uppercase tracking-[0.22em] text-terracotta mt-1">
+                          {e.projectType || "General enquiry"} · {new Date(e.createdAt).toLocaleString()}
+                        </div>
+                      </div>
+                      <div className="flex gap-2">
+                        {e.phone && (
+                          <a
+                            href={`https://wa.me/${e.phone.replace(/\D/g, "")}`}
+                            target="_blank" rel="noopener noreferrer"
+                            className="px-3 py-1.5 bg-[#25D366] text-white text-[11px] uppercase tracking-[0.2em]"
+                          >WhatsApp</a>
+                        )}
+                        <a href={`mailto:${e.email}`} className="px-3 py-1.5 bg-charcoal text-cream text-[11px] uppercase tracking-[0.2em]">Email</a>
+                        <button
+                          onClick={() => { enquiries.remove(e.id); setEnqs(enquiries.getAll()); toast.success("Removed."); }}
+                          className="px-3 py-1.5 bg-destructive text-destructive-foreground text-[11px] uppercase tracking-[0.2em]"
+                        >Delete</button>
+                      </div>
+                    </div>
+                    <div className="grid sm:grid-cols-2 gap-2 text-sm text-charcoal/85 mb-3">
+                      <div><span className="text-charcoal/50">Email:</span> {e.email}</div>
+                      {e.phone && <div><span className="text-charcoal/50">Phone:</span> {e.phone}</div>}
+                    </div>
+                    <p className="text-charcoal/80 text-sm leading-relaxed whitespace-pre-wrap">{e.message}</p>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        )}
       </main>
     </div>
   );

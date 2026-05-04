@@ -4,6 +4,7 @@ import { Link } from "@tanstack/react-router";
 import { toast } from "sonner";
 import { CATEGORIES } from "@/lib/categories";
 import { DesignCard } from "@/components/site/DesignCard";
+import { enquiries, type Enquiry } from "@/lib/admin-auth";
 import heroImg from "@/assets/hero-interior.jpg";
 import p1 from "@/assets/portfolio-1.jpg";
 import p3 from "@/assets/portfolio-3.jpg";
@@ -313,8 +314,34 @@ function Contact() {
   const formRef = useRef<HTMLFormElement>(null);
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
+    const form = formRef.current;
+    if (!form) return;
+    const fd = new FormData(form);
+    const enq: Enquiry = {
+      id: crypto.randomUUID(),
+      firstName: String(fd.get("firstName") || "").trim(),
+      lastName: String(fd.get("lastName") || "").trim(),
+      email: String(fd.get("email") || "").trim(),
+      phone: String(fd.get("phone") || "").trim() || undefined,
+      projectType: String(fd.get("projectType") || "").trim() || undefined,
+      message: String(fd.get("message") || "").trim(),
+      createdAt: Date.now(),
+    };
+    enquiries.add(enq);
+
+    // Notify owner via WhatsApp
+    const WHATSAPP_NUMBER = "919999999999"; // owner's number, country code + number, no '+'
+    const text =
+      `New enquiry from ${enq.firstName} ${enq.lastName}\n` +
+      `Email: ${enq.email}\n` +
+      (enq.phone ? `Phone: ${enq.phone}\n` : "") +
+      (enq.projectType ? `Project: ${enq.projectType}\n` : "") +
+      `Message: ${enq.message}`;
+    const url = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(text)}`;
+    window.open(url, "_blank", "noopener,noreferrer");
+
     toast.success("Thank you — we'll be in touch within 2 business days.");
-    formRef.current?.reset();
+    form.reset();
   }
   const input = "w-full bg-cream border border-clay/40 rounded-sm py-2.5 px-3 text-sm focus:outline-none focus:border-terracotta transition-colors text-charcoal placeholder:text-charcoal/50";
   return (
@@ -325,21 +352,21 @@ function Contact() {
           <h2 className="font-display text-2xl md:text-3xl mb-6 text-charcoal">Let's design something <em>beautiful</em>.</h2>
           <form ref={formRef} onSubmit={handleSubmit} className="space-y-3">
             <div className="grid grid-cols-2 gap-3">
-              <input required placeholder="First name" className={input} />
-              <input required placeholder="Last name" className={input} />
+              <input name="firstName" required placeholder="First name" className={input} />
+              <input name="lastName" required placeholder="Last name" className={input} />
             </div>
             <div className="grid grid-cols-2 gap-3">
-              <input required type="email" placeholder="Email" className={input} />
-              <input placeholder="Phone" className={input} />
+              <input name="email" required type="email" placeholder="Email" className={input} />
+              <input name="phone" placeholder="Phone" className={input} />
             </div>
-            <select className={input} defaultValue="">
+            <select name="projectType" className={input} defaultValue="">
               <option value="" disabled>Project type</option>
               <option>Residential</option>
               <option>Commercial</option>
               <option>Hospitality</option>
               <option>Consultation only</option>
             </select>
-            <textarea required rows={3} placeholder="Tell us about your space" className={input + " resize-none"} />
+            <textarea name="message" required rows={3} placeholder="Tell us about your space" className={input + " resize-none"} />
             <button type="submit" className="w-full sm:w-auto px-7 py-3 bg-charcoal text-cream text-xs uppercase tracking-[0.22em] hover:bg-terracotta transition-colors">Send Inquiry</button>
           </form>
         </div>

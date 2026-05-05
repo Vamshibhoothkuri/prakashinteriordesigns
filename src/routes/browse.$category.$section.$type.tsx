@@ -89,7 +89,7 @@ function TypePage() {
               {type.samples.map((src, i) => (
                 <button
                   key={i}
-                  onClick={() => setLightbox({ id: `s-${i}`, url: src, type: "image", name: type.name, category: cat.slug as GalleryItem["category"], createdAt: 0 })}
+                  onClick={() => setLightbox({ id: `s-${i}`, url: src, type: "image", name: type.name, category: "residential" as GalleryItem["category"], createdAt: 0 })}
                   className="group relative aspect-square overflow-hidden border border-clay/30 hover:border-terracotta transition-colors"
                 >
                   <img src={src} alt={`${type.name} ${i + 1}`} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />

@@ -16,6 +16,7 @@ import { Route as AdminRouteImport } from './routes/admin'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as DesignSlugRouteImport } from './routes/design.$slug'
 import { Route as CategoryCategoryRouteImport } from './routes/category.$category'
+import { Route as BrowseCategorySectionTypeRouteImport } from './routes/browse.$category.$section.$type'
 
 const VideosRoute = VideosRouteImport.update({
   id: '/videos',
@@ -52,6 +53,12 @@ const CategoryCategoryRoute = CategoryCategoryRouteImport.update({
   path: '/category/$category',
   getParentRoute: () => rootRouteImport,
 } as any)
+const BrowseCategorySectionTypeRoute =
+  BrowseCategorySectionTypeRouteImport.update({
+    id: '/browse/$category/$section/$type',
+    path: '/browse/$category/$section/$type',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -61,6 +68,7 @@ export interface FileRoutesByFullPath {
   '/videos': typeof VideosRoute
   '/category/$category': typeof CategoryCategoryRoute
   '/design/$slug': typeof DesignSlugRoute
+  '/browse/$category/$section/$type': typeof BrowseCategorySectionTypeRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -70,6 +78,7 @@ export interface FileRoutesByTo {
   '/videos': typeof VideosRoute
   '/category/$category': typeof CategoryCategoryRoute
   '/design/$slug': typeof DesignSlugRoute
+  '/browse/$category/$section/$type': typeof BrowseCategorySectionTypeRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -80,6 +89,7 @@ export interface FileRoutesById {
   '/videos': typeof VideosRoute
   '/category/$category': typeof CategoryCategoryRoute
   '/design/$slug': typeof DesignSlugRoute
+  '/browse/$category/$section/$type': typeof BrowseCategorySectionTypeRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -91,6 +101,7 @@ export interface FileRouteTypes {
     | '/videos'
     | '/category/$category'
     | '/design/$slug'
+    | '/browse/$category/$section/$type'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -100,6 +111,7 @@ export interface FileRouteTypes {
     | '/videos'
     | '/category/$category'
     | '/design/$slug'
+    | '/browse/$category/$section/$type'
   id:
     | '__root__'
     | '/'
@@ -109,6 +121,7 @@ export interface FileRouteTypes {
     | '/videos'
     | '/category/$category'
     | '/design/$slug'
+    | '/browse/$category/$section/$type'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -119,6 +132,7 @@ export interface RootRouteChildren {
   VideosRoute: typeof VideosRoute
   CategoryCategoryRoute: typeof CategoryCategoryRoute
   DesignSlugRoute: typeof DesignSlugRoute
+  BrowseCategorySectionTypeRoute: typeof BrowseCategorySectionTypeRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -172,6 +186,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CategoryCategoryRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/browse/$category/$section/$type': {
+      id: '/browse/$category/$section/$type'
+      path: '/browse/$category/$section/$type'
+      fullPath: '/browse/$category/$section/$type'
+      preLoaderRoute: typeof BrowseCategorySectionTypeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -183,16 +204,8 @@ const rootRouteChildren: RootRouteChildren = {
   VideosRoute: VideosRoute,
   CategoryCategoryRoute: CategoryCategoryRoute,
   DesignSlugRoute: DesignSlugRoute,
+  BrowseCategorySectionTypeRoute: BrowseCategorySectionTypeRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { createStart } from '@tanstack/react-start'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-  }
-}

@@ -3,6 +3,7 @@ import { useEffect, useRef, useState } from "react";
 import { toast } from "sonner";
 import { adminAuth, gallery, enquiries, type GalleryItem, type Enquiry } from "@/lib/admin-auth";
 import { CATEGORIES } from "@/lib/categories";
+import { CATEGORY_TREE } from "@/lib/category-tree";
 
 export const Route = createFileRoute("/admin")({ component: AdminPage });
 
@@ -115,7 +116,10 @@ function AdminPage() {
             className="px-4 py-2 text-sm border border-clay/40 bg-cream focus:border-terracotta focus:outline-none min-w-[280px]"
           />
           <datalist id="service-suggestions">
-            {CATEGORIES.flatMap((c) => c.designs.map((d) => d.title)).map((s) => (
+            {Array.from(new Set([
+              ...CATEGORIES.flatMap((c) => c.designs.map((d) => d.title)),
+              ...CATEGORY_TREE.flatMap((c) => c.sections.flatMap((s) => s.types.map((t) => t.name))),
+            ])).map((s) => (
               <option key={s} value={s} />
             ))}
           </datalist>

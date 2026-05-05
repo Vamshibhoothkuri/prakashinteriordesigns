@@ -28,7 +28,7 @@ export interface TreeSection {
 }
 
 export interface TreeCategory {
-  slug: "residential" | "commercial";
+  slug: "residential" | "commercial" | "home-theatre";
   name: string;
   icon: string;
   tagline: string;
@@ -102,16 +102,6 @@ export const CATEGORY_TREE: TreeCategory[] = [
           { name: "Curtains & Blinds", cover: svcCurtains, samples: [svcCurtains] },
           { name: "Hydraulic Beds", cover: svcBed, samples: [svcBed] },
           { name: "Sofas & Recliners", cover: svcSofa, samples: [svcSofa] },
-        ],
-      },
-      {
-        name: "Home Theatre",
-        cover: svcTheatre,
-        premium: true,
-        types: [
-          { name: "Dedicated Home Theatre Room", cover: svcTheatre, samples: [svcTheatre, svcCeiling] },
-          { name: "Living Room Theatre Setup", cover: svcSofa, samples: [svcSofa, svcTvUnit] },
-          { name: "Mini Theatre Design", cover: svcTheatre, samples: [svcTheatre] },
         ],
       },
       {

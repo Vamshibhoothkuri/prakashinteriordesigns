@@ -96,8 +96,8 @@ export function CategoryExplorer() {
                 <div className="absolute inset-x-0 bottom-0 p-6 flex items-end justify-between">
                   <div>
                     <div className="text-2xl mb-1">{c.icon}</div>
-                    <h3 className="font-display text-3xl md:text-4xl text-cream">{c.name}</h3>
-                    <p className="text-cream/80 text-sm mt-1">{c.tagline}</p>
+                    <h3 className="font-display text-3xl md:text-4xl text-cream drop-shadow-md">{c.name}</h3>
+                    <p className="text-cream/95 text-sm mt-1">{c.tagline}</p>
                   </div>
                   <div className="w-11 h-11 rounded-full bg-terracotta flex items-center justify-center shrink-0">
                     <ArrowUpRight className="w-5 h-5 text-cream" />

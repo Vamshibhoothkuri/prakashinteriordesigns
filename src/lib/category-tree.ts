@@ -28,7 +28,7 @@ export interface TreeSection {
 }
 
 export interface TreeCategory {
-  slug: "residential" | "commercial";
+  slug: "residential" | "commercial" | "home-theatre";
   name: string;
   icon: string;
   tagline: string;
@@ -105,16 +105,6 @@ export const CATEGORY_TREE: TreeCategory[] = [
         ],
       },
       {
-        name: "Home Theatre",
-        cover: svcTheatre,
-        premium: true,
-        types: [
-          { name: "Dedicated Home Theatre Room", cover: svcTheatre, samples: [svcTheatre, svcCeiling] },
-          { name: "Living Room Theatre Setup", cover: svcSofa, samples: [svcSofa, svcTvUnit] },
-          { name: "Mini Theatre Design", cover: svcTheatre, samples: [svcTheatre] },
-        ],
-      },
-      {
         name: "Property Types",
         cover: svcHotel,
         types: [
@@ -164,6 +154,25 @@ export const CATEGORY_TREE: TreeCategory[] = [
           { name: "Crockery & Display Units", cover: svcCrockery, samples: [svcCrockery] },
           { name: "Sofa & Seating", cover: svcSofa, samples: [svcSofa] },
           { name: "TV & Entertainment Units", cover: svcTvUnit, samples: [svcTvUnit] },
+        ],
+      },
+    ],
+  },
+  {
+    slug: "home-theatre",
+    name: "Home Theatre",
+    icon: "🎬",
+    tagline: "Cinematic experiences at home.",
+    cover: svcTheatre,
+    sections: [
+      {
+        name: "Theatre Rooms",
+        cover: svcTheatre,
+        premium: true,
+        types: [
+          { name: "Dedicated Home Theatre Room", cover: svcTheatre, samples: [svcTheatre, svcCeiling] },
+          { name: "Living Room Theatre Setup", cover: svcSofa, samples: [svcSofa, svcTvUnit] },
+          { name: "Mini Theatre Design", cover: svcTheatre, samples: [svcTheatre] },
         ],
       },
     ],

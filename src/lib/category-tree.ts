@@ -158,6 +158,25 @@ export const CATEGORY_TREE: TreeCategory[] = [
       },
     ],
   },
+  {
+    slug: "home-theatre",
+    name: "Home Theatre",
+    icon: "🎬",
+    tagline: "Cinematic experiences at home.",
+    cover: svcTheatre,
+    sections: [
+      {
+        name: "Theatre Rooms",
+        cover: svcTheatre,
+        premium: true,
+        types: [
+          { name: "Dedicated Home Theatre Room", cover: svcTheatre, samples: [svcTheatre, svcCeiling] },
+          { name: "Living Room Theatre Setup", cover: svcSofa, samples: [svcSofa, svcTvUnit] },
+          { name: "Mini Theatre Design", cover: svcTheatre, samples: [svcTheatre] },
+        ],
+      },
+    ],
+  },
 ];
 
 export function findType(categorySlug: string, sectionName: string, typeName: string) {

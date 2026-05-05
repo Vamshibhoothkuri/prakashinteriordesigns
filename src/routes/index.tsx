@@ -2,9 +2,8 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useRef, useState } from "react";
 import { Link } from "@tanstack/react-router";
 import { toast } from "sonner";
-import { CATEGORIES } from "@/lib/categories";
-import { DesignCard } from "@/components/site/DesignCard";
 import { enquiries, type Enquiry } from "@/lib/admin-auth";
+import { CategoryExplorer } from "@/components/site/CategoryExplorer";
 import heroImg from "@/assets/hero-interior.jpg";
 import p1 from "@/assets/portfolio-1.jpg";
 import p3 from "@/assets/portfolio-3.jpg";
@@ -19,7 +18,7 @@ function Index() {
     <div className="min-h-screen bg-cream text-charcoal">
       <Nav />
       <Hero />
-      <CategoryShowcase />
+      <CategoryExplorer />
       <Process />
       <Testimonials />
       <About />
@@ -135,64 +134,6 @@ function Stat({ n, l }: { n: string; l: string }) {
       <div className="font-display text-2xl md:text-3xl text-terracotta">{n}</div>
       <div className="text-[10px] uppercase tracking-[0.2em] text-charcoal/60 mt-1">{l}</div>
     </div>
-  );
-}
-
-/* -------------------------- SERVICES --------------------------- */
-function CategoryShowcase() {
-  const [active, setActive] = useState<string>(CATEGORIES[0].slug);
-  const cat = CATEGORIES.find((c) => c.slug === active) ?? CATEGORIES[0];
-  const preview = cat.designs.slice(0, 8);
-
-  return (
-    <section id="services" className="bg-charcoal text-cream py-24 md:py-32 px-6 mt-12">
-      <div className="max-w-7xl mx-auto">
-        <div className="mb-12 max-w-2xl">
-          <p className="text-[11px] uppercase tracking-[0.3em] text-terracotta mb-4">Browse our work</p>
-          <h2 className="font-display text-4xl md:text-5xl">
-            Explore <em className="text-clay">designs</em> by category.
-          </h2>
-          <p className="text-cream/85 text-sm mt-5 max-w-xl">
-            Pick a category to preview a selection of our work, then explore the full collection on the dedicated page.
-          </p>
-        </div>
-
-        {/* Category tabs */}
-        <div className="flex flex-wrap gap-2 mb-10 border-b border-cream/15">
-          {CATEGORIES.map((c) => (
-            <button
-              key={c.slug}
-              onClick={() => setActive(c.slug)}
-              className={`px-6 py-3 text-[11px] uppercase tracking-[0.25em] transition-all border-b-2 -mb-px ${
-                active === c.slug
-                  ? "border-terracotta text-cream"
-                  : "border-transparent text-cream/75 hover:text-cream"
-              }`}
-            >
-              {c.name}
-            </button>
-          ))}
-        </div>
-
-        {/* Preview grid */}
-        <div className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5">
-          {preview.map((d) => (
-            <DesignCard key={d.slug} design={d} />
-          ))}
-        </div>
-
-        {/* Explore More CTA */}
-        <div className="mt-10 flex justify-center">
-          <Link
-            to="/category/$category"
-            params={{ category: cat.slug }}
-            className="inline-flex items-center gap-3 px-7 py-3.5 bg-terracotta text-cream text-xs uppercase tracking-[0.22em] hover:bg-clay transition-colors whitespace-nowrap"
-          >
-            Explore All {cat.name} →
-          </Link>
-        </div>
-      </div>
-    </section>
   );
 }
 

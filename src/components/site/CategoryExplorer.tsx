@@ -1,14 +1,37 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "@tanstack/react-router";
 import { ArrowUpRight, ChevronLeft, Sparkles } from "lucide-react";
 import { CATEGORY_TREE, type TreeCategory, type TreeSection } from "@/lib/category-tree";
 
 type Step = "category" | "section" | "type";
 
+const STORAGE_KEY = "explorer-state-v1";
+
 export function CategoryExplorer() {
   const [step, setStep] = useState<Step>("category");
   const [cat, setCat] = useState<TreeCategory | null>(null);
   const [section, setSection] = useState<TreeSection | null>(null);
+
+  // Restore last position so users return to the section list after viewing a type page.
+  useEffect(() => {
+    try {
+      const raw = sessionStorage.getItem(STORAGE_KEY);
+      if (!raw) return;
+      const saved = JSON.parse(raw) as { catSlug?: string; sectionName?: string; step?: Step };
+      const c = CATEGORY_TREE.find((x) => x.slug === saved.catSlug) || null;
+      const s = c?.sections.find((x) => x.name === saved.sectionName) || null;
+      if (saved.step === "section" && c) { setCat(c); setStep("section"); }
+      else if (saved.step === "type" && c && s) { setCat(c); setSection(s); setStep("section"); }
+    } catch {}
+  }, []);
+
+  useEffect(() => {
+    try {
+      sessionStorage.setItem(STORAGE_KEY, JSON.stringify({
+        catSlug: cat?.slug, sectionName: section?.name, step,
+      }));
+    } catch {}
+  }, [step, cat, section]);
 
   return (
     <section id="services" className="bg-charcoal text-cream py-20 md:py-28 px-6 mt-12">

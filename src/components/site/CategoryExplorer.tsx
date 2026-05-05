@@ -92,7 +92,7 @@ export function CategoryExplorer() {
                 <div className="aspect-[16/10] overflow-hidden">
                   <img src={c.cover} alt={c.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
                 </div>
-                <div className="absolute inset-0 bg-gradient-to-t from-charcoal via-charcoal/30 to-transparent" />
+                <div className="absolute inset-0 bg-gradient-to-t from-charcoal/95 via-charcoal/60 to-charcoal/10" />
                 <div className="absolute inset-x-0 bottom-0 p-6 flex items-end justify-between">
                   <div>
                     <div className="text-2xl mb-1">{c.icon}</div>
@@ -123,7 +123,7 @@ export function CategoryExplorer() {
                 <div className="aspect-[4/3] overflow-hidden">
                   <img src={s.cover} alt={s.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
                 </div>
-                <div className="absolute inset-0 bg-gradient-to-t from-charcoal/95 via-charcoal/40 to-transparent" />
+                <div className="absolute inset-0 bg-gradient-to-t from-charcoal/95 via-charcoal/70 to-charcoal/20" />
                 {s.premium && (
                   <div className="absolute top-3 right-3 inline-flex items-center gap-1 px-2.5 py-1 bg-terracotta text-cream text-[9px] uppercase tracking-[0.22em]">
                     <Sparkles className="w-3 h-3" /> Premium
@@ -131,8 +131,8 @@ export function CategoryExplorer() {
                 )}
                 <div className="absolute inset-x-0 bottom-0 p-5 flex items-end justify-between gap-3">
                   <div>
-                    <h3 className="font-display text-xl text-cream">{s.name}</h3>
-                    <p className="text-cream/70 text-[11px] uppercase tracking-[0.18em] mt-1">{s.types.length} styles</p>
+                    <h3 className="font-display text-xl text-cream drop-shadow-md">{s.name}</h3>
+                    <p className="text-cream/90 text-[11px] uppercase tracking-[0.18em] mt-1">{s.types.length} styles</p>
                   </div>
                   <div className="w-9 h-9 rounded-full bg-cream/10 group-hover:bg-terracotta flex items-center justify-center transition-colors">
                     <ArrowUpRight className="w-4 h-4 text-cream" />
@@ -159,9 +159,9 @@ export function CategoryExplorer() {
                 <div className="aspect-square overflow-hidden">
                   <img src={t.cover} alt={t.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
                 </div>
-                <div className="absolute inset-0 bg-gradient-to-t from-charcoal/95 via-charcoal/30 to-transparent" />
+                <div className="absolute inset-0 bg-gradient-to-t from-charcoal/95 via-charcoal/65 to-charcoal/15" />
                 <div className="absolute inset-x-0 bottom-0 p-4 flex items-end justify-between gap-2">
-                  <h3 className="font-display text-base text-cream leading-tight">{t.name}</h3>
+                  <h3 className="font-display text-base text-cream leading-tight drop-shadow-md">{t.name}</h3>
                   <div className="w-8 h-8 rounded-full bg-cream/10 group-hover:bg-terracotta flex items-center justify-center transition-colors shrink-0">
                     <ArrowUpRight className="w-3.5 h-3.5 text-cream" />
                   </div>

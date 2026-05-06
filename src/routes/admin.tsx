@@ -14,6 +14,8 @@ function AdminPage() {
   const [items, setItems] = useState<GalleryItem[]>([]);
   const [enqs, setEnqs] = useState<Enquiry[]>([]);
   const [category, setCategory] = useState<GalleryItem["category"]>("residential");
+  const [sectionName, setSectionName] = useState<string>("");
+  const [typeName, setTypeName] = useState<string>("");
   const [service, setService] = useState<string>("");
   const [dragOver, setDragOver] = useState(false);
   const fileRef = useRef<HTMLInputElement>(null);
@@ -27,18 +29,23 @@ function AdminPage() {
 
   function handleFiles(files: FileList | null) {
     if (!files || files.length === 0) return;
+    if (category !== "videos") {
+      if (!sectionName) { toast.error("Please choose a section (e.g. Bedroom)."); return; }
+      if (!typeName) { toast.error("Please choose a type (e.g. Master Bedroom)."); return; }
+    }
     const newItems: GalleryItem[] = [];
     let pending = files.length;
     Array.from(files).forEach((file) => {
       const reader = new FileReader();
       reader.onload = () => {
+        const tag = typeName || service.trim() || undefined;
         newItems.push({
           id: crypto.randomUUID(),
           url: reader.result as string,
           type: file.type.startsWith("video") ? "video" : "image",
           name: file.name.replace(/\.[^.]+$/, ""),
           category,
-          service: service.trim() || undefined,
+          service: tag,
           createdAt: Date.now(),
         });
         pending--;
@@ -99,10 +106,10 @@ function AdminPage() {
         <>
         <div className="mb-6 flex flex-wrap items-center gap-3">
           <span className="text-xs uppercase tracking-[0.2em] text-charcoal/60">Upload to:</span>
-          {(["residential", "commercial", "videos"] as const).map((c) => (
+          {(["residential", "commercial", "home-theatre", "videos"] as const).map((c) => (
             <button
               key={c}
-              onClick={() => setCategory(c)}
+              onClick={() => { setCategory(c); setSectionName(""); setTypeName(""); }}
               className={`px-4 py-2 text-[11px] uppercase tracking-[0.2em] border ${
                 category === c ? "bg-charcoal text-cream border-charcoal" : "border-clay/40 text-charcoal/70 hover:border-charcoal"
               }`}
@@ -112,12 +119,54 @@ function AdminPage() {
           ))}
         </div>
 
+        {category !== "videos" && (() => {
+          const tree = CATEGORY_TREE.find((c) => c.slug === category);
+          const sections = tree?.sections ?? [];
+          const currentSection = sections.find((s) => s.name === sectionName);
+          const types = currentSection?.types ?? [];
+          return (
+            <div className="mb-6 space-y-3">
+              <div className="flex flex-wrap items-center gap-2">
+                <span className="text-xs uppercase tracking-[0.2em] text-charcoal/60 w-24">Section:</span>
+                {sections.map((s) => (
+                  <button
+                    key={s.name}
+                    onClick={() => { setSectionName(s.name); setTypeName(""); }}
+                    className={`px-3 py-1.5 text-[11px] uppercase tracking-[0.18em] border ${
+                      sectionName === s.name ? "bg-terracotta text-cream border-terracotta" : "border-clay/40 text-charcoal/70 hover:border-terracotta"
+                    }`}
+                  >{s.name}</button>
+                ))}
+              </div>
+              {currentSection && (
+                <div className="flex flex-wrap items-center gap-2">
+                  <span className="text-xs uppercase tracking-[0.2em] text-charcoal/60 w-24">Type:</span>
+                  {types.map((t) => (
+                    <button
+                      key={t.name}
+                      onClick={() => setTypeName(t.name)}
+                      className={`px-3 py-1.5 text-[11px] uppercase tracking-[0.18em] border ${
+                        typeName === t.name ? "bg-charcoal text-cream border-charcoal" : "border-clay/40 text-charcoal/70 hover:border-charcoal"
+                      }`}
+                    >{t.name}</button>
+                  ))}
+                </div>
+              )}
+              <p className="text-[11px] text-charcoal/60">
+                Path: <span className="text-charcoal">{category}</span>
+                {sectionName && <> → <span className="text-charcoal">{sectionName}</span></>}
+                {typeName && <> → <span className="text-charcoal">{typeName}</span></>}
+              </p>
+            </div>
+          );
+        })()}
+
         <div className="mb-6 flex flex-wrap items-center gap-3">
           <span className="text-xs uppercase tracking-[0.2em] text-charcoal/60">Tag service (optional):</span>
           <input
             value={service}
             onChange={(e) => setService(e.target.value)}
-            placeholder="Tag a design (e.g. Modern Modular Kitchen)"
+            placeholder="Override tag (defaults to selected type)"
             list="service-suggestions"
             className="px-4 py-2 text-sm border border-clay/40 bg-cream focus:border-terracotta focus:outline-none min-w-[280px]"
           />
@@ -130,7 +179,7 @@ function AdminPage() {
             ))}
           </datalist>
           <p className="w-full text-[11px] text-charcoal/60 mt-1">
-            Tip: tag uploads with a design title to make them appear on that design's page.
+            Optional override. Leave empty to use the selected Type as the tag.
           </p>
         </div>
 

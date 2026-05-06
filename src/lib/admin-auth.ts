@@ -28,7 +28,7 @@ export interface GalleryItem {
   url: string;
   type: "image" | "video";
   name: string;
-  category: "residential" | "commercial" | "videos";
+  category: "residential" | "commercial" | "home-theatre" | "videos";
   service?: string;
   createdAt: number;
 }

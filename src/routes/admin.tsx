@@ -14,6 +14,8 @@ function AdminPage() {
   const [items, setItems] = useState<GalleryItem[]>([]);
   const [enqs, setEnqs] = useState<Enquiry[]>([]);
   const [category, setCategory] = useState<GalleryItem["category"]>("residential");
+  const [sectionName, setSectionName] = useState<string>("");
+  const [typeName, setTypeName] = useState<string>("");
   const [service, setService] = useState<string>("");
   const [dragOver, setDragOver] = useState(false);
   const fileRef = useRef<HTMLInputElement>(null);
@@ -27,18 +29,23 @@ function AdminPage() {
 
   function handleFiles(files: FileList | null) {
     if (!files || files.length === 0) return;
+    if (category !== "videos") {
+      if (!sectionName) { toast.error("Please choose a section (e.g. Bedroom)."); return; }
+      if (!typeName) { toast.error("Please choose a type (e.g. Master Bedroom)."); return; }
+    }
     const newItems: GalleryItem[] = [];
     let pending = files.length;
     Array.from(files).forEach((file) => {
       const reader = new FileReader();
       reader.onload = () => {
+        const tag = typeName || service.trim() || undefined;
         newItems.push({
           id: crypto.randomUUID(),
           url: reader.result as string,
           type: file.type.startsWith("video") ? "video" : "image",
           name: file.name.replace(/\.[^.]+$/, ""),
           category,
-          service: service.trim() || undefined,
+          service: tag,
           createdAt: Date.now(),
         });
         pending--;

@@ -1,17 +1,18 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
-import { adminAuth } from "@/lib/admin-auth";
+import { adminAuth, ensureDemoAdmin, DEMO_ADMIN } from "@/lib/admin-auth";
 
 export const Route = createFileRoute("/login")({ component: LoginPage });
 
 function LoginPage() {
   const navigate = useNavigate();
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState(DEMO_ADMIN.email);
+  const [password, setPassword] = useState(DEMO_ADMIN.password);
   const [error, setError] = useState("");
 
   useEffect(() => {
+    ensureDemoAdmin();
     if (adminAuth.isLoggedIn()) navigate({ to: "/admin" });
   }, [navigate]);
 
@@ -39,6 +40,10 @@ function LoginPage() {
             <button type="submit" className="w-full py-3.5 bg-charcoal text-cream text-xs uppercase tracking-[0.22em] hover:bg-terracotta transition-colors">Login</button>
           </form>
           <p className="text-center text-xs text-charcoal/50 mt-6">Forgot password? Contact your developer to reset.</p>
+          <div className="mt-4 p-3 bg-sand/60 border border-clay/30 text-[11px] text-charcoal/70 text-center">
+            <div className="uppercase tracking-[0.2em] text-terracotta mb-1">Demo credentials</div>
+            <div>{DEMO_ADMIN.email} / {DEMO_ADMIN.password}</div>
+          </div>
           {!adminAuth.exists() && (
             <p className="text-center text-xs text-charcoal/60 mt-4">No account yet? <Link to="/register" className="text-terracotta underline">Register</Link></p>
           )}

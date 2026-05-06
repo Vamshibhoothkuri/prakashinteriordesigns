@@ -4,6 +4,19 @@ const SESSION_KEY = "luxe_is_admin_logged_in";
 const GALLERY_KEY = "luxe_gallery_items";
 const ENQUIRIES_KEY = "luxe_enquiries";
 
+export const DEMO_ADMIN = {
+  name: "Demo Owner",
+  email: "admin@luxe.com",
+  password: "admin123",
+};
+
+export function ensureDemoAdmin() {
+  if (typeof window === "undefined") return;
+  if (!localStorage.getItem(CRED_KEY)) {
+    localStorage.setItem(CRED_KEY, JSON.stringify(DEMO_ADMIN));
+  }
+}
+
 export interface AdminCredentials {
   name: string;
   email: string;

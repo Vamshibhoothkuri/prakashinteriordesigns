@@ -10,6 +10,7 @@ export const Route = createFileRoute("/admin")({ component: AdminPage });
 function AdminPage() {
   const navigate = useNavigate();
   const [tab, setTab] = useState<"uploads" | "enquiries">("uploads");
+  const [ready, setReady] = useState(false);
   const [items, setItems] = useState<GalleryItem[]>([]);
   const [enqs, setEnqs] = useState<Enquiry[]>([]);
   const [category, setCategory] = useState<GalleryItem["category"]>("residential");
@@ -21,6 +22,7 @@ function AdminPage() {
     if (!adminAuth.isLoggedIn()) { navigate({ to: "/login" }); return; }
     setItems(gallery.getAll());
     setEnqs(enquiries.getAll());
+    setReady(true);
   }, [navigate]);
 
   function handleFiles(files: FileList | null) {
@@ -59,6 +61,10 @@ function AdminPage() {
   function logout() {
     adminAuth.logout();
     navigate({ to: "/" });
+  }
+
+  if (!ready) {
+    return <div className="min-h-screen bg-cream flex items-center justify-center text-charcoal/60 text-sm uppercase tracking-[0.2em]">Loading…</div>;
   }
 
   return (

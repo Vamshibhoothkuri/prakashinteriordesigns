@@ -82,25 +82,25 @@ export function CategoryExplorer() {
         </div>
 
         {step === "category" && (
-          <div className="grid sm:grid-cols-2 gap-5">
+          <div className="grid grid-cols-3 gap-3 md:gap-5">
             {CATEGORY_TREE.map((c) => (
               <button
                 key={c.slug}
                 onClick={() => { setCat(c); setStep("section"); }}
                 className="group relative overflow-hidden border border-cream/15 hover:border-terracotta transition-colors text-left"
               >
-                <div className="aspect-[16/10] overflow-hidden">
+                <div className="aspect-[3/4] md:aspect-[4/5] overflow-hidden">
                   <img src={c.cover} alt={c.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
                 </div>
                 <div className="absolute inset-0 bg-gradient-to-t from-charcoal/95 via-charcoal/60 to-charcoal/10" />
-                <div className="absolute inset-x-0 bottom-0 p-6 flex items-end justify-between">
+                <div className="absolute inset-x-0 bottom-0 p-3 md:p-5 flex items-end justify-between gap-2">
                   <div>
-                    <div className="text-2xl mb-1">{c.icon}</div>
-                    <h3 className="font-display text-3xl md:text-4xl text-cream drop-shadow-md">{c.name}</h3>
-                    <p className="text-cream/95 text-sm mt-1">{c.tagline}</p>
+                    <div className="text-lg md:text-2xl mb-0.5">{c.icon}</div>
+                    <h3 className="font-display text-base md:text-2xl text-cream drop-shadow-md leading-tight">{c.name}</h3>
+                    <p className="hidden md:block text-cream/95 text-xs mt-1">{c.tagline}</p>
                   </div>
-                  <div className="w-11 h-11 rounded-full bg-terracotta flex items-center justify-center shrink-0">
-                    <ArrowUpRight className="w-5 h-5 text-cream" />
+                  <div className="w-7 h-7 md:w-10 md:h-10 rounded-full bg-terracotta flex items-center justify-center shrink-0">
+                    <ArrowUpRight className="w-3.5 h-3.5 md:w-5 md:h-5 text-cream" />
                   </div>
                 </div>
               </button>

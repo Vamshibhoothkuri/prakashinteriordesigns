@@ -19,6 +19,9 @@ function AdminPage() {
   const [service, setService] = useState<string>("");
   const [dragOver, setDragOver] = useState(false);
   const fileRef = useRef<HTMLInputElement>(null);
+  const [pendingFiles, setPendingFiles] = useState<File[]>([]);
+  const [pendingPreviews, setPendingPreviews] = useState<{ name: string; url: string; type: "image" | "video" }[]>([]);
+  const [uploading, setUploading] = useState(false);
 
   useEffect(() => {
     if (!adminAuth.isLoggedIn()) { navigate({ to: "/login" }); return; }
@@ -33,9 +36,37 @@ function AdminPage() {
       if (!sectionName) { toast.error("Please choose a section (e.g. Bedroom)."); return; }
       if (!typeName) { toast.error("Please choose a type (e.g. Master Bedroom)."); return; }
     }
+    const newFiles = Array.from(files);
+    setPendingFiles((prev) => [...prev, ...newFiles]);
+
+    newFiles.forEach((file) => {
+      const reader = new FileReader();
+      reader.onload = () => {
+        setPendingPreviews((prev) => [
+          ...prev,
+          {
+            name: file.name.replace(/\.[^.]+$/, ""),
+            url: reader.result as string,
+            type: file.type.startsWith("video") ? "video" : "image",
+          },
+        ]);
+      };
+      reader.readAsDataURL(file);
+    });
+  }
+
+  function clearPending() {
+    setPendingFiles([]);
+    setPendingPreviews([]);
+    if (fileRef.current) fileRef.current.value = "";
+  }
+
+  function submitUploads() {
+    if (pendingFiles.length === 0) return;
+    setUploading(true);
     const newItems: GalleryItem[] = [];
-    let pending = files.length;
-    Array.from(files).forEach((file) => {
+    let processed = 0;
+    pendingFiles.forEach((file) => {
       const reader = new FileReader();
       reader.onload = () => {
         const tag = typeName || service.trim() || undefined;
@@ -48,10 +79,14 @@ function AdminPage() {
           service: tag,
           createdAt: Date.now(),
         });
-        pending--;
-        if (pending === 0) {
+        processed++;
+        if (processed === pendingFiles.length) {
           gallery.add(newItems);
           setItems(gallery.getAll());
+          setPendingFiles([]);
+          setPendingPreviews([]);
+          setUploading(false);
+          if (fileRef.current) fileRef.current.value = "";
           toast.success(`${newItems.length} item(s) uploaded.`);
         }
       };
@@ -194,6 +229,36 @@ function AdminPage() {
           <p className="text-sm text-charcoal/60">or click to browse</p>
           <input ref={fileRef} type="file" accept="image/*,video/*" multiple className="hidden" onChange={(e) => handleFiles(e.target.files)} />
         </div>
+
+        {pendingPreviews.length > 0 && (
+          <div className="mt-8">
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="font-display text-xl">Selected files <span className="text-charcoal/40 text-base">({pendingPreviews.length})</span></h3>
+              <div className="flex gap-2">
+                <button onClick={clearPending} className="px-4 py-2 border border-clay/40 text-charcoal/70 text-[11px] uppercase tracking-[0.2em] hover:border-charcoal hover:text-charcoal transition-colors">Clear</button>
+                <button
+                  onClick={submitUploads}
+                  disabled={uploading}
+                  className="px-4 py-2 bg-terracotta text-cream text-[11px] uppercase tracking-[0.2em] hover:bg-charcoal transition-colors disabled:opacity-50"
+                >
+                  {uploading ? "Uploading…" : "Submit Uploads"}
+                </button>
+              </div>
+            </div>
+            <div className="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3">
+              {pendingPreviews.map((p, i) => (
+                <div key={i} className="relative aspect-square overflow-hidden border border-clay/30">
+                  {p.type === "video" ? (
+                    <video src={p.url} className="w-full h-full object-cover" muted />
+                  ) : (
+                    <img src={p.url} alt={p.name} className="w-full h-full object-cover" />
+                  )}
+                  <div className="absolute bottom-0 inset-x-0 bg-charcoal/60 text-cream text-[10px] px-2 py-1 truncate">{p.name}</div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
 
         <div className="mt-12">
           <h2 className="font-display text-2xl mb-6">Uploaded items <span className="text-charcoal/40 text-base">({items.length})</span></h2>

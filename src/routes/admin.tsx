@@ -62,7 +62,11 @@ function AdminPage() {
   }
 
   function submitUploads() {
-    if (pendingFiles.length === 0) return;
+    if (pendingFiles.length === 0) { toast.error("Please select files first."); return; }
+    if (category !== "videos") {
+      if (!sectionName) { toast.error("Please choose a section (e.g. Bedroom)."); return; }
+      if (!typeName) { toast.error("Please choose a type (e.g. Master Bedroom)."); return; }
+    }
     setUploading(true);
     const newItems: GalleryItem[] = [];
     let processed = 0;
@@ -87,7 +91,8 @@ function AdminPage() {
           setPendingPreviews([]);
           setUploading(false);
           if (fileRef.current) fileRef.current.value = "";
-          toast.success(`${newItems.length} item(s) uploaded.`);
+          const pathLabel = [category, sectionName, typeName].filter(Boolean).join(" → ");
+          toast.success(`${newItems.length} item(s) uploaded to ${pathLabel}.`);
         }
       };
       reader.readAsDataURL(file);

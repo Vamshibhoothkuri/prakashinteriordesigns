@@ -36,9 +36,37 @@ function AdminPage() {
       if (!sectionName) { toast.error("Please choose a section (e.g. Bedroom)."); return; }
       if (!typeName) { toast.error("Please choose a type (e.g. Master Bedroom)."); return; }
     }
+    const newFiles = Array.from(files);
+    setPendingFiles((prev) => [...prev, ...newFiles]);
+
+    newFiles.forEach((file) => {
+      const reader = new FileReader();
+      reader.onload = () => {
+        setPendingPreviews((prev) => [
+          ...prev,
+          {
+            name: file.name.replace(/\.[^.]+$/, ""),
+            url: reader.result as string,
+            type: file.type.startsWith("video") ? "video" : "image",
+          },
+        ]);
+      };
+      reader.readAsDataURL(file);
+    });
+  }
+
+  function clearPending() {
+    setPendingFiles([]);
+    setPendingPreviews([]);
+    if (fileRef.current) fileRef.current.value = "";
+  }
+
+  function submitUploads() {
+    if (pendingFiles.length === 0) return;
+    setUploading(true);
     const newItems: GalleryItem[] = [];
-    let pending = files.length;
-    Array.from(files).forEach((file) => {
+    let processed = 0;
+    pendingFiles.forEach((file) => {
       const reader = new FileReader();
       reader.onload = () => {
         const tag = typeName || service.trim() || undefined;
@@ -51,10 +79,14 @@ function AdminPage() {
           service: tag,
           createdAt: Date.now(),
         });
-        pending--;
-        if (pending === 0) {
+        processed++;
+        if (processed === pendingFiles.length) {
           gallery.add(newItems);
           setItems(gallery.getAll());
+          setPendingFiles([]);
+          setPendingPreviews([]);
+          setUploading(false);
+          if (fileRef.current) fileRef.current.value = "";
           toast.success(`${newItems.length} item(s) uploaded.`);
         }
       };

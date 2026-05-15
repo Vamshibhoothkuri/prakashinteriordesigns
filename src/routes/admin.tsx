@@ -265,6 +265,28 @@ function AdminPage() {
           </div>
         )}
 
+        {pendingPreviews.length > 0 && (
+          <div className="sticky bottom-0 inset-x-0 mt-8 -mx-6 px-6 py-4 bg-charcoal text-cream border-t border-terracotta/40 flex flex-wrap items-center justify-between gap-4 z-30">
+            <div className="text-[11px] uppercase tracking-[0.2em]">
+              <span className="text-cream/60">Submitting to:</span>{" "}
+              <span className="text-terracotta">{category}</span>
+              {sectionName && <> → <span className="text-terracotta">{sectionName}</span></>}
+              {typeName && <> → <span className="text-terracotta">{typeName}</span></>}
+              <span className="ml-3 text-cream/60">{pendingPreviews.length} file(s)</span>
+            </div>
+            <div className="flex gap-2">
+              <button onClick={clearPending} className="px-4 py-2 border border-cream/30 text-cream text-[11px] uppercase tracking-[0.2em] hover:border-terracotta hover:text-terracotta transition-colors">Cancel</button>
+              <button
+                onClick={submitUploads}
+                disabled={uploading}
+                className="px-6 py-2 bg-terracotta text-cream text-[11px] uppercase tracking-[0.2em] hover:bg-cream hover:text-charcoal transition-colors disabled:opacity-50"
+              >
+                {uploading ? "Uploading…" : "Submit all"}
+              </button>
+            </div>
+          </div>
+        )}
+
         <div className="mt-12">
           <h2 className="font-display text-2xl mb-6">Uploaded items <span className="text-charcoal/40 text-base">({items.length})</span></h2>
           {items.length === 0 ? (

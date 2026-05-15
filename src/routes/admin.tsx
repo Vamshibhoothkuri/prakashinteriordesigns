@@ -19,6 +19,9 @@ function AdminPage() {
   const [service, setService] = useState<string>("");
   const [dragOver, setDragOver] = useState(false);
   const fileRef = useRef<HTMLInputElement>(null);
+  const [pendingFiles, setPendingFiles] = useState<File[]>([]);
+  const [pendingPreviews, setPendingPreviews] = useState<{ name: string; url: string; type: "image" | "video" }[]>([]);
+  const [uploading, setUploading] = useState(false);
 
   useEffect(() => {
     if (!adminAuth.isLoggedIn()) { navigate({ to: "/login" }); return; }

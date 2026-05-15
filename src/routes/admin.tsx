@@ -230,6 +230,36 @@ function AdminPage() {
           <input ref={fileRef} type="file" accept="image/*,video/*" multiple className="hidden" onChange={(e) => handleFiles(e.target.files)} />
         </div>
 
+        {pendingPreviews.length > 0 && (
+          <div className="mt-8">
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="font-display text-xl">Selected files <span className="text-charcoal/40 text-base">({pendingPreviews.length})</span></h3>
+              <div className="flex gap-2">
+                <button onClick={clearPending} className="px-4 py-2 border border-clay/40 text-charcoal/70 text-[11px] uppercase tracking-[0.2em] hover:border-charcoal hover:text-charcoal transition-colors">Clear</button>
+                <button
+                  onClick={submitUploads}
+                  disabled={uploading}
+                  className="px-4 py-2 bg-terracotta text-cream text-[11px] uppercase tracking-[0.2em] hover:bg-charcoal transition-colors disabled:opacity-50"
+                >
+                  {uploading ? "Uploading…" : "Submit Uploads"}
+                </button>
+              </div>
+            </div>
+            <div className="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3">
+              {pendingPreviews.map((p, i) => (
+                <div key={i} className="relative aspect-square overflow-hidden border border-clay/30">
+                  {p.type === "video" ? (
+                    <video src={p.url} className="w-full h-full object-cover" muted />
+                  ) : (
+                    <img src={p.url} alt={p.name} className="w-full h-full object-cover" />
+                  )}
+                  <div className="absolute bottom-0 inset-x-0 bg-charcoal/60 text-cream text-[10px] px-2 py-1 truncate">{p.name}</div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
         <div className="mt-12">
           <h2 className="font-display text-2xl mb-6">Uploaded items <span className="text-charcoal/40 text-base">({items.length})</span></h2>
           {items.length === 0 ? (

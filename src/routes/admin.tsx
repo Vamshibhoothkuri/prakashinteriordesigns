@@ -62,7 +62,11 @@ function AdminPage() {
   }
 
   function submitUploads() {
-    if (pendingFiles.length === 0) return;
+    if (pendingFiles.length === 0) { toast.error("Please select files first."); return; }
+    if (category !== "videos") {
+      if (!sectionName) { toast.error("Please choose a section (e.g. Bedroom)."); return; }
+      if (!typeName) { toast.error("Please choose a type (e.g. Master Bedroom)."); return; }
+    }
     setUploading(true);
     const newItems: GalleryItem[] = [];
     let processed = 0;
@@ -87,7 +91,8 @@ function AdminPage() {
           setPendingPreviews([]);
           setUploading(false);
           if (fileRef.current) fileRef.current.value = "";
-          toast.success(`${newItems.length} item(s) uploaded.`);
+          const pathLabel = [category, sectionName, typeName].filter(Boolean).join(" → ");
+          toast.success(`${newItems.length} item(s) uploaded to ${pathLabel}.`);
         }
       };
       reader.readAsDataURL(file);
@@ -256,6 +261,28 @@ function AdminPage() {
                   <div className="absolute bottom-0 inset-x-0 bg-charcoal/60 text-cream text-[10px] px-2 py-1 truncate">{p.name}</div>
                 </div>
               ))}
+            </div>
+          </div>
+        )}
+
+        {pendingPreviews.length > 0 && (
+          <div className="sticky bottom-0 inset-x-0 mt-8 -mx-6 px-6 py-4 bg-charcoal text-cream border-t border-terracotta/40 flex flex-wrap items-center justify-between gap-4 z-30">
+            <div className="text-[11px] uppercase tracking-[0.2em]">
+              <span className="text-cream/60">Submitting to:</span>{" "}
+              <span className="text-terracotta">{category}</span>
+              {sectionName && <> → <span className="text-terracotta">{sectionName}</span></>}
+              {typeName && <> → <span className="text-terracotta">{typeName}</span></>}
+              <span className="ml-3 text-cream/60">{pendingPreviews.length} file(s)</span>
+            </div>
+            <div className="flex gap-2">
+              <button onClick={clearPending} className="px-4 py-2 border border-cream/30 text-cream text-[11px] uppercase tracking-[0.2em] hover:border-terracotta hover:text-terracotta transition-colors">Cancel</button>
+              <button
+                onClick={submitUploads}
+                disabled={uploading}
+                className="px-6 py-2 bg-terracotta text-cream text-[11px] uppercase tracking-[0.2em] hover:bg-cream hover:text-charcoal transition-colors disabled:opacity-50"
+              >
+                {uploading ? "Uploading…" : "Submit all"}
+              </button>
             </div>
           </div>
         )}
